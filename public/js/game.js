@@ -44,8 +44,10 @@ function createGame() {
 	playerRight = this.physics.add.sprite(980, 200, 'playerRight');
 	playerRight.setCollideWorldBounds(true);
 
+
 	playerLeft = this.physics.add.sprite(20, 200, 'playerLeft');
 	playerLeft.setCollideWorldBounds(true);
+	
 
 	ball = this.physics.add.sprite(500, 300, 'ball');
 
@@ -91,14 +93,14 @@ function updateGame() {
 	}
 	// Change to half width of ball pic
 	if (ball.x >= 980) {
-		console.log('HIT!');
+		console.log('Hit');
 		scorePc += 1;
 		scoreTextPc.setText('Score: ' + scorePc);
 		reset();
 	}
 
 	if (ball.x <= 20) {
-		console.log('HIT!');
+		console.log('Hit');
 		scorePlayer += 1;
 		scoreTextPlayer.setText('Score: ' + scorePlayer);
 		reset();
@@ -106,29 +108,33 @@ function updateGame() {
 }
 
 function hitPc(ball, playerLeft) {
-	velocityX = velocityX - 50;
+	velocityX = velocityX -50;
 	velocityX = velocityX * -1;
+	velocityY = velocityY * -1; //changes the angle whe hit
 	console.log(velocityX);
 	ball.setVelocityX(velocityX);
+	ball.setVelocityY(velocityY);
 
 	if (velocityY < 0) {
 		velocityY = velocityY * -1;
 		ball.setVelocityY(velocityY);
 	}
-	playerLeft.setVelocityX(1);
+	playerLeft.setVelocityX(0);
 }
 
 function hitPlayer(ball, playerRight) {
-	velocityX = velocityX + 50;
+	velocityX = velocityX +50;
 	velocityX = velocityX * -1;
+	velocityY = velocityY * -1; //changes the angle whe hit
 	console.log(velocityX);
 	ball.setVelocityX(velocityX);
 
 	if (velocityY < 0) {
 		velocityY = velocityY * -1;
 		ball.setVelocityY(velocityY);
+		ball.setVelocityY(velocityY);
 	}
-	playerRight.setVelocityX(1);
+	playerRight.setVelocityX(0);
 }
 
 function reset() {
@@ -136,10 +142,10 @@ function reset() {
 	velocityY = 250;
 	ball.x = 500;
 	ball.y = 300;
-	playerRight.x = 980;
-	playerRight.y = 200;
-	playerLeft.x = 20;
-	playerLeft.y = 200;
+	// playerRight.x = 980;
+	// playerRight.y = 200;
+	// playerLeft.x = 0;
+	// playerLeft.y = 200;
 	ball.setVelocityX(velocityX);
 	ball.setVelocityY(velocityY);
 }
