@@ -4,6 +4,6 @@ class UsersController < ApplicationController
         options = {
             include: [:games]
         }
-        render json: UsersSerializer.new(user, options)
+        render json: UserSerializer.new(user, options)
     end
 end

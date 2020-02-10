@@ -1,6 +1,9 @@
 class GamesController < ApplicationController
     def index
         games = Game.all
-        render json: GameSerializer.new(games)
+        options = {
+            include: [:uers]
+        }
+        render json: GameSerializer.new(games, users)
     end
 end
