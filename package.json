@@ -4,6 +4,7 @@
   "description": "Alien Sponck Party",
   "main": "phaser.js",
   "dependencies": {
+    "express": "^4.17.1",
     "http-server": "^0.12.1",
     "phaser": "^3.22.0"
   },
