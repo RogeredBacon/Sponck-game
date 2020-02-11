@@ -6,10 +6,13 @@ Array.prototype.random = function () {
 
 /// Phaser
 
+const gameWindowWidth = window.innerWidth;
+const gameWindowHight= 600;
+
 var config = {
 	type: Phaser.AUTO,
-	width: 1000,
-	height: 600,
+	width: gameWindowWidth,
+	height: gameWindowHight,
 	physics: {
 		default: 'arcade',
 	},
@@ -72,15 +75,15 @@ function createGame() {
 	this.keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
 	this.keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
 
-	playerRight = this.physics.add.sprite(980, 200, 'playerRight');
+	playerRight = this.physics.add.sprite((gameWindowWidth - 20), (gameWindowHight/2), 'playerRight');
 	playerRight.setCollideWorldBounds(true);
 
 
-	playerLeft = this.physics.add.sprite(20, 200, 'playerLeft');
+	playerLeft = this.physics.add.sprite(20, (gameWindowHight/2), 'playerLeft');
 	playerLeft.setCollideWorldBounds(true);
 	
 
-	ball = this.physics.add.sprite(500, 300, 'ball');
+	ball = this.physics.add.sprite((gameWindowWidth/2), (gameWindowHight/2), 'ball');
 
 	ball.setCollideWorldBounds(true);
 	ball.setBounce(1);
@@ -93,25 +96,26 @@ function createGame() {
 	this.physics.add.collider(ball, playerLeft, hitPlayerLeft, null, this);
 	this.physics.add.collider(ball, playerRight, hitPlayerRight, null, this);
 
-	scoreTextPlayerLeft = this.add.text(window.innerWidth * 0.05, 16, 'score: 0', {
+
+	scoreTextPlayerLeft = this.add.text(gameWindowWidth * 0.05, 16, 'score: 0', {
 		fontSize: '2em',
 		fill: '#F00'
 	});
-	scoreTextPlayerRight = this.add.text(900, 16, 'score: 0', {
+	scoreTextPlayerRight = this.add.text((gameWindowWidth - 150), 16, 'score: 0', {
 		fontSize: '2em',
 		fill: '#00F'
 	});
 
 	//Blocks
-	// blockPink1 = this.physics.add.sprite(500, 200, 'blockPink1');
-	// this.physics.add.collider(ball, blockPink1, hitBlock, null, this);
-	// blockPink1.setCollideWorldBounds(true);
-	// blockPink1.setBounce(0.5);
+	blockPink1 = this.physics.add.sprite(gameWindowWidth * 0.5, gameWindowHight * 0.2, 'blockPink1');
+	this.physics.add.collider(ball, blockPink1, hitBlock, null, this);
+	blockPink1.setCollideWorldBounds(true);
+	blockPink1.setBounce(0.5);
 
-	// blockGreen1 = this.physics.add.sprite(600, 500, 'blockGreen1');
-	// this.physics.add.collider(ball, blockGreen1, hitBlock, null, this);
-	// blockGreen1.setCollideWorldBounds(true);
-	// blockGreen1.setBounce(0.5);	
+	blockGreen1 = this.physics.add.sprite(gameWindowWidth * 0.8, gameWindowHight * 0.5, 'blockGreen1');
+	this.physics.add.collider(ball, blockGreen1, hitBlock, null, this);
+	blockGreen1.setCollideWorldBounds(true);
+	blockGreen1.setBounce(0.5);	
 }
 
 function updateGame() {
