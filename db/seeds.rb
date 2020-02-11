@@ -12,10 +12,10 @@ User.delete_all
 
 Game.delete_all
 
-u1 = User.create(username: Faker::Name.unique.first_name, password: Faker::Lorem.characters(number: 7) )
-u2 = User.create(username: Faker::Name.unique.first_name, password: Faker::Lorem.characters(number: 7) )
-u3 = User.create(username: Faker::Name.unique.first_name, password: Faker::Lorem.characters(number: 7) )
-u4 = User.create(username: Faker::Name.unique.first_name, password: Faker::Lorem.characters(number: 7) )
+u1 = User.create(username: Faker::Name.unique.first_name )
+u2 = User.create(username: Faker::Name.unique.first_name )
+u3 = User.create(username: Faker::Name.unique.first_name )
+u4 = User.create(username: Faker::Name.unique.first_name )
 
 g1 = Game.create(user: u1, score: rand(0..500))
 g2 = Game.create(user: u2, score: rand(0..500))

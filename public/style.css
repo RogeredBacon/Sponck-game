@@ -46,6 +46,15 @@ input {
     font-size: 20px;
 }
 
+.submit {
+    padding: 5px;
+    font-size: 16px;
+    font-family: 'Orbitron', sans-serif;
+    display: flex;
+    align-items: center;
+    align-self: center;
+}
+
 #contentDiv {
     position: relative;
     height: 80vh;
@@ -71,8 +80,9 @@ input {
 }
 
 #gameHeader {
+    padding-top: 15px;
     height: 10vh;
     font-family: 'Press Start 2P', cursive;
-    font-size: 30px;
+    font-size: 70px;
 }
 
