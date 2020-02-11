@@ -7,7 +7,7 @@ Array.prototype.random = function () {
 /// Phaser
 
 const gameWindowWidth = window.innerWidth;
-const gameWindowHight = 500;
+const gameWindowHight = 600;
 
 var config = {
 	type: Phaser.AUTO,
@@ -269,6 +269,8 @@ function reset() {
 	// playerLeft.y = 200;
 	ball.setVelocityX(velocityX);
 	ball.setVelocityY(velocityY);
+
+	
 }
 
 //Blocks
