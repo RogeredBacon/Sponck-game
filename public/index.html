@@ -4,15 +4,50 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
-		<script src="js/phaser.js"></script>
-		<script src="js/game.js"></script>
-		<title>Document</title>
-		<style type="text/css">
-			body {
-				margin: 0;
-			}
-		</style>
+		
+		<link rel="stylesheet" type ="text/css" href="style.css">
+		<link href="https://fonts.googleapis.com/css?family=Orbitron|Press+Start+2P&display=swap" rel="stylesheet">
+		<script defer src="js/welcome.js"></script>
+		<!-- <script defer src="js/phaser.js"></script> -->
+		<title>Sponck</title>
+		
 	</head>
 
-	<body></body>
+	<body>
+		<div id="gameHeader" class="center-item">
+			<h1>Sponck</h1>
+		</div>
+
+		<div id="contentDiv">
+
+			<div id="welcomeDiv" >
+				<h1 class="center-item"> Welcome to the Alien Sponck Party!</h1><br>
+				<span class="inline-container">
+					<button id="loginButton" class="inline-item">I've been here before</button>
+					<button id="signUpButton" class="inline-item">I'm new to the party</button>
+				</span>
+			</div>
+
+			<div id="signUpDiv" class="center-item forms">
+				<form id="signupForm">
+					<label>Create User Name: <input class="username" type="text"></label>
+					<label>Create Password: <input class="password" type="text"></label><br>
+					<input class="submit" type="Submit" value="Log me in!">
+				</form>
+			</div>
+
+			<div id="loginDiv" class="center-item forms">
+				<form id="loginForm">
+					<label>User Name: <input class="username" type="text"></label>
+					<label>Password: <input class="password" type="text"></label><br>
+					<input class="submit" type="Submit" value="Sign me up!">
+				</form>
+			</div>
+
+			<div id="gameContainer" class="center-item">
+				<canvas id="canvas"></canvas>
+			</div>  
+
+		</div>
+	</body>
 </html>
