@@ -46,7 +46,7 @@ const arrayY = [-100,100]
 
 
 var ball;
-var velocityX = -400//arrayX.random();
+var velocityX = +400//arrayX.random();
 var velocityY = 0//arrayY.random();
 var cursor;
 var playerRight;
@@ -107,15 +107,15 @@ function createGame() {
 	});
 
 	//Blocks
-	blockPink1 = this.physics.add.sprite(gameWindowWidth * 0.5, gameWindowHight * 0.2, 'blockPink1');
-	this.physics.add.collider(ball, blockPink1, hitBlock, null, this);
-	blockPink1.setCollideWorldBounds(true);
-	blockPink1.setBounce(0.5);
+	// blockPink1 = this.physics.add.sprite(gameWindowWidth * 0.5, gameWindowHight * 0.2, 'blockPink1');
+	// this.physics.add.collider(ball, blockPink1, hitBlock, null, this);
+	// blockPink1.setCollideWorldBounds(true);
+	// blockPink1.setBounce(0.5);
 
-	blockGreen1 = this.physics.add.sprite(gameWindowWidth * 0.8, gameWindowHight * 0.5, 'blockGreen1');
-	this.physics.add.collider(ball, blockGreen1, hitBlock, null, this);
-	blockGreen1.setCollideWorldBounds(true);
-	blockGreen1.setBounce(0.5);	
+	// blockGreen1 = this.physics.add.sprite(gameWindowWidth * 0.8, gameWindowHight * 0.5, 'blockGreen1');
+	// this.physics.add.collider(ball, blockGreen1, hitBlock, null, this);
+	// blockGreen1.setCollideWorldBounds(true);
+	// blockGreen1.setBounce(0.5);	
 }
 
 function updateGame() {
@@ -168,9 +168,9 @@ function hitPlayerLeft(ball, playerLeft) {
 	if (velocityY < 0) {
 		velocityY = velocityY * -1;
 		ball.setVelocityY(velocityY);
-	} else if(velocityX > 1000 || velocityX < -1000){
-		velocityX = arrayY.random();
-		// ball.setVelocityX(velocityX);
+	} else if(velocityX > 2000 || velocityX < -2000){
+		velocityX = 2000;;
+		ball.setVelocityX(velocityX);
 	}
 	playerLeft.setVelocityX(0);
 }
@@ -179,16 +179,15 @@ function hitPlayerRight(ball, playerRight) {
 	velocityX = velocityX + 200;
 	velocityX = velocityX * -1;
 	// velocityY = velocityY * -1; //changes the angle whe hit
-	console.log("X vel",velocityX);
-	console.log("Y vel",velocityY);
-	
+
+	ball.setVelocityX(velocityX);
 	// ball.setVelocityY(velocityY);
 
-	if (velocityY <= 0) {
-		velocityY = -100;
+	if (velocityY > 0) {
+		velocityY = velocityY * -1;
 		ball.setVelocityY(velocityY);
-	} else if(velocityX > 1000 || velocityX < -1000){
-		velocityX = arrayY.random();
+	} else if(velocityX > 2000 || velocityX < -2000){
+		velocityX = -2000;
 		ball.setVelocityX(velocityX);
 	}
 	playerRight.setVelocityX(0);
