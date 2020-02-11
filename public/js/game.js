@@ -37,17 +37,16 @@ function preloadGame() {
 
 	this.load.image('blockGreen1','assets/green_block_full.png')
 }
+
 // Sort out angle randomly but also to prevent soft locks
 
-const arrayX = [-500,-350,-250,250,350,500]
+const arrayX = [-500,-400,-350,-250,250,350,400,500]
 const arrayY = [-100,100]
 
 
-
-
 var ball;
-var velocityX = +400//arrayX.random();
-var velocityY = 0//arrayY.random();
+var velocityX = arrayX.random();
+var velocityY = arrayY.random();
 var cursor;
 var playerRight;
 var playerLeft;
@@ -107,15 +106,17 @@ function createGame() {
 	});
 
 	//Blocks
-	// blockPink1 = this.physics.add.sprite(gameWindowWidth * 0.5, gameWindowHight * 0.2, 'blockPink1');
-	// this.physics.add.collider(ball, blockPink1, hitBlock, null, this);
-	// blockPink1.setCollideWorldBounds(true);
-	// blockPink1.setBounce(0.5);
+	blockPink1 = this.physics.add.sprite(gameWindowWidth * 0.5, gameWindowHight * 0.2, 'blockPink1');
+	this.physics.add.collider(ball, blockPink1, hitBlock, null, this);
+	blockPink1.setCollideWorldBounds(true);
+	blockPink1.setBounce(0.5);
 
 	// blockGreen1 = this.physics.add.sprite(gameWindowWidth * 0.8, gameWindowHight * 0.5, 'blockGreen1');
 	// this.physics.add.collider(ball, blockGreen1, hitBlock, null, this);
 	// blockGreen1.setCollideWorldBounds(true);
-	// blockGreen1.setBounce(0.5);	
+	// blockGreen1.setBounce(0.5);
+	
+	this.keyP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
 }
 
 function updateGame() {
@@ -139,7 +140,7 @@ function updateGame() {
 		playerLeft.setVelocityY(0);
 	}
 	// Change to half width of ball pic
-	if (ball.x >= 980) {
+	if (ball.x >= (gameWindowWidth - 20)) {
 		console.log('Hit');
 		scoreLeft += 1;
 		scoreTextPlayerLeft.setText('Score: ' + scoreLeft);
@@ -156,8 +157,16 @@ function updateGame() {
 		// ball.velocityY *= -1
 		reset();
 	}
+
+	/////////change blocks
+
+	if (this.keyP.isDown){
+		this.texture.remove('blockPink1')
+		this.load.image('blockPink1','assets/pink_block_2.png')
+	}
+
 }
-angleArray = [-1,1]
+
 
 function hitPlayerLeft(ball, playerLeft) {
 	velocityX = velocityX - 200;
@@ -172,13 +181,17 @@ function hitPlayerLeft(ball, playerLeft) {
 		velocityX = 2000;;
 		ball.setVelocityX(velocityX);
 	}
+
+	if (velocityY == 0){
+		velocityY = arrayY.random();
+	}
 	playerLeft.setVelocityX(0);
 }
 
 function hitPlayerRight(ball, playerRight) {
 	velocityX = velocityX + 200;
 	velocityX = velocityX * -1;
-	// velocityY = velocityY * -1; //changes the angle whe hit
+	velocityY = velocityY * -1; //changes the angle whe hit
 
 	ball.setVelocityX(velocityX);
 	// ball.setVelocityY(velocityY);
@@ -189,6 +202,10 @@ function hitPlayerRight(ball, playerRight) {
 	} else if(velocityX > 2000 || velocityX < -2000){
 		velocityX = -2000;
 		ball.setVelocityX(velocityX);
+	}
+
+	if (velocityY == 0){
+		velocityY = arrayY.random();
 	}
 	playerRight.setVelocityX(0);
 }
@@ -209,10 +226,10 @@ function hitBlock(ball, block) {
 
 
 function reset() {
-	velocityX = Phaser.Math.Between(-250, 250);
-	velocityY = 250;
-	ball.x = 500;
-	ball.y = 300;
+	velocityX = arrayX.random();
+	velocityY = arrayY.random();
+	ball.x = gameWindowWidth/2;
+	ball.y = gameWindowHight/2;
 	// playerRight.x = 980;
 	// playerRight.y = 200;
 	// playerLeft.x = 0;
