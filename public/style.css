@@ -1,10 +1,11 @@
 * { 
-    margin: 5px;
+    
     padding: 0;
     color: #ff1a75;
 }
 
 body {
+    margin: 5px;
     height: 100%;
     background-color: black;
     font-family: 'Orbitron', sans-serif;
@@ -21,12 +22,17 @@ input {
     font-size: 20px;
 }
 
+.welcome {
+    color: #F4FF00;
+}
+
 .center-item {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin: 30px auto;
+    text-align: center;
+    margin: 30px 20px;
 }
 
 .inline-container {
@@ -34,6 +40,7 @@ input {
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    
 }
 
 .inline-item {
@@ -46,14 +53,17 @@ input {
     font-size: 20px;
 }
 
-.submit {
+.secondary {
+    font-size: 30px;
+}
+/* .submit {
     padding: 5px;
     font-size: 16px;
     font-family: 'Orbitron', sans-serif;
     display: flex;
     align-items: center;
     align-self: center;
-}
+} */
 
 #contentDiv {
     position: relative;
@@ -65,24 +75,36 @@ input {
     justify-content: center;
 }
 
-#gameContainer {
+/* iframe {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-}
+    margin: 0;
+    padding: 0;
+    width: 600px;
+    height: 300px;
+} */
 
-#canvas { 
+/* #canvas { 
     width: 800px;
     height: 600px;
     display: block;
     background: #eee; 
-}
+} */
 
 #gameHeader {
-    padding-top: 15px;
+    padding: 15px;
     height: 10vh;
     font-family: 'Press Start 2P', cursive;
     font-size: 70px;
 }
 
+
+
+
+
+/* must keep at bottom of file!! */
+.hidden {
+    display: none;
+}
