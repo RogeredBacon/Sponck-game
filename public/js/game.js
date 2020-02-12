@@ -52,9 +52,21 @@ function preload() {
 
 	this.load.image('blockYellow1', 'assets/yellow_block_full.png');
 
-	this.load.image('toli','assets/toli.png',10,10)
+	this.load.image('toli','assets/toli.png');
+	this.load.image('amir','assets/amir.png');
+	this.load.image('james','assets/james.png');
+	this.load.image('javier','assets/javier.png');
+	this.load.image('jo','assets/jo.png');
+	this.load.image('tomy','assets/tomy.png');
+	this.load.image('mani','assets/mani.png');
+	this.load.image('sara','assets/sara.png');
+	this.load.image('renata','assets/renata.png');
+	this.load.image('mariola','assets/mariola.png');
+	this.load.image('keemo','assets/keemo.png');
 
 	this.load.image('heart', 'assets/heart_pixelart.png');
+
+	this.load.image('particle', 'assets/particle.png');
 
 }
 Array.prototype.random = function() {
@@ -65,7 +77,11 @@ Array.prototype.random = function() {
 const arrayX = [-400, -350, -250, 250, 350, 400];
 const arrayY = [-100, -300, 300, 100];
 const array0to1 = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9];
+
 const blocksNamesArray = ['blockPink1', 'blockGreen1', 'blockYellow1'];
+const blocksWomenPry = ['toli','amir','james','javier','jo','tomy','mani','sara','mariola','renata','keemo'];
+
+let blocksArray = blocksNamesArray;
 
 var ball;
 var velocityX = arrayX.random();
@@ -177,6 +193,7 @@ function create() {
 	blockPink1.setCollideWorldBounds(true);
 	blockPink1.setBounce(0.5);
 
+
 	blockGreen1 = this.physics.add.sprite(
 		gameWindowWidth * 0.8,
 		gameWindowHight * 0.5,
@@ -208,12 +225,32 @@ function create() {
 			game.scene.start('TitleScene');
 		}
 	});
+
+	///////////////background
+
+	var particles = this.add.particles('particle')
+	var emitter = particles.createEmitter();
+	emitter.setQuantity(20);
+	emitter.startFollow(ball);
+	emitter.setSpeed(6000);
+	emitter.setGravity(500, 500);
+
+
+	////easter Egg
+
+	this.keyE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
+
+
 }
 
 function update() {
 	if (this.keyP.isDown) {
 		console.log('p is down');
 		game.scene.pause('default');
+	}
+
+	if (this.keyE.isDown) {
+		blocksArray = blocksWomenPry;
 	}
 
 	//repeated events at certain time intervals
@@ -372,14 +409,13 @@ function createAPinkBlock() {
 	block = this.physics.add.sprite(
 		gameWindowWidth * array0to1.random(),
 		gameWindowHight * array0to1.random(),
-		// blocksNamesArray.random()
-		'toli'
+		blocksArray.random()
 	);
 	this.physics.add.collider(ball, block, hitBlock, null, this);
 
 	block.setCollideWorldBounds(true);
 	block.setBounce(0.5);
-
+	
 	blocksCreated++;
 
 	if (blocksCreated === 30) {
