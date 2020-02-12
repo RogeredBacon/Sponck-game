@@ -2,6 +2,7 @@
 const getElement = (element) => document.querySelector(element)
 // urls
 const usersURL = "http://localhost:3000/users/"
+const gamesURL = "http://localhost:3000/games/"
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -40,7 +41,6 @@ document.addEventListener("DOMContentLoaded", () => {
         alien.style.height = "200px"
         alien.style.float = "right"
         welcomeDiv.append(alien)
-
     }
    
 
@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // find user when logging in
     loginForm.addEventListener("submit", (e) => {
         e.preventDefault()
-        userForm = loginForm.querySelector(".username").value.toUpperCase()
+        let userForm = loginForm.querySelector(".username").value.toUpperCase()
         
         e.target.reset()
 
@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // find a user
     const findUser = (users, userForm) => {
         for(const user of users){
-            userName = user.username.toUpperCase()
+            let userName = user.username.toUpperCase()
             if (userName == userForm) {
                 userDetails.username = userName
                 userDetails.id = user.id
@@ -98,7 +98,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // create user
     signupForm.addEventListener("submit", (e) => {
         e.preventDefault()
-        userForm = signupForm.querySelector(".username").value.toUpperCase()
+        let userForm = signupForm.querySelector(".username").value.toUpperCase()
         
         e.target.reset()
 
@@ -110,7 +110,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // check if user exists in db, if exists give error, if not create in db
     const createUser = (users, userForm) => {
         for(const user of users){
-            userName = user.username.toUpperCase()
+            let userName = user.username.toUpperCase()
             if (userName == userForm) {
                 return userExists()
             }
@@ -170,13 +170,62 @@ document.addEventListener("DOMContentLoaded", () => {
     // need to add elements for log out, new game, show scoreboard
     const createHeaderBar = () => {
         hideItem(loggedInPage)
-        headerBar = document.createElement("header")
+        const headerBar = document.createElement("header")
         headerBar.innerText = userDetails.username
         getElement("body").prepend(headerBar)
+            // need to add elements for log out, new game, show scoreboard
     }
 
     const showScoreBoard = () => {
+        const leaderBoardHeader = document.createElement("h2")
+        leaderBoardHeader.innerText = "LEADER BOARD"
+        leaderBoardHeader.classList = "header-item, secondary"
+
+        const leaderBoard = document.createElement("table")
+        leaderBoard.style.width = "50%"
+        const headers = document.createElement("tr")
+        
+        const positionHeader = document.createElement("th")
+        positionHeader.innerText = "POSITION"
+        const nameHeader = document.createElement("th")
+        nameHeader.innerText = "USER"
+        const scoreHeader = document.createElement("th")
+        scoreHeader.innerText = "SCORE"
+        
+        createTableRows(leaderBoard)
+
+
+        headers.append(positionHeader, nameHeader, scoreHeader)
+        leaderBoard.append(headers)
+        contentDiv.append(leaderBoardHeader, leaderBoard)
         // create scoreboard table
+    }
+
+    const createTableRows = (leaderBoard) => {
+        fetch(gamesURL)
+            .then( resp => resp.json())
+            .then( games => {
+                // sort games by highes score descending
+                let sortedGames = games.sort((a,b) => b.score - a.score)
+                // create each row element
+                for (let i = 0; i < 10; i++) {
+                    const game = sortedGames[i];
+                    const row = document.createElement("tr")
+                    const position = document.createElement("td")
+                    position.innerText = (i + 1)
+                    const player = document.createElement("td")
+                    player.innerText = game.user.username
+                    const gameScore = document.createElement("td")
+                    gameScore.innerText = game.score
+
+                    row.append(position, player, gameScore)
+                    leaderBoard.append(row)
+                }
+
+            })
+
+
+        
     }
 
     const renderGameDiv = () => {
@@ -191,7 +240,6 @@ document.addEventListener("DOMContentLoaded", () => {
         gameContainer.style.border = "2px solid #ff1a75"
         gameContainer.style.boxSizing = "border-box"
         contentDiv.append(gameContainer)
-        console.log(gameContainer.childNodes)
     }
 
 

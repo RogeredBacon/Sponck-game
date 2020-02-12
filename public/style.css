@@ -1,6 +1,5 @@
 * { 
-    
-    padding: 0;
+    /* padding: 0; */
     color: #ff1a75;
 }
 
@@ -20,6 +19,23 @@ button {
 input {
     font-family: 'Orbitron', sans-serif;
     font-size: 20px;
+}
+
+
+td, th {
+    font-size: 25px;
+    text-align: left;
+    border-spacing: 5px, 2px;
+}
+
+td {
+    color: #00ff00;
+}
+
+
+
+.header-item{
+    font-family: 'Press Start 2P', cursive;
 }
 
 .welcome {
@@ -45,8 +61,8 @@ input {
 
 .inline-item {
     display: flex;
-    padding: 20px;
-    margin: 30px;
+    padding: 20px 10px;
+    margin: 30px 10px;
 }
 
 .forms {
@@ -54,7 +70,8 @@ input {
 }
 
 .secondary {
-    font-size: 30px;
+    color: #F4FF00;
+    font-size: 40px;
 }
 /* .submit {
     padding: 5px;
@@ -67,7 +84,7 @@ input {
 
 #contentDiv {
     position: relative;
-    height: 80vh;
+    height: 70vh;
     margin: auto;
     display: flex;
     flex-direction: column;
@@ -96,7 +113,7 @@ input {
 #gameHeader {
     padding: 15px;
     height: 10vh;
-    font-family: 'Press Start 2P', cursive;
+    /* font-family: 'Press Start 2P', cursive; */
     font-size: 70px;
 }
 
