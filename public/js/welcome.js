@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const welcomeDiv = getElement("#welcomeDiv")
     const signUpDiv = getElement("#signUpDiv")
     const loginDiv = getElement("#loginDiv")
-    const gameContainer = getElement("#gameContainer")
+    // const gameContainer = getElement("#gameContainer")
     const signUpButton = getElement("#signUpButton")
     const loginButton = getElement("#loginButton")
     const loginForm = getElement("#loginForm")
@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const firstScreen = () => {
         hideItem(signUpDiv)
         hideItem(loginDiv)
-        hideItem(gameContainer)
+        // hideItem(gameContainer)
         hideItem(loggedInPage)
 
         alien = document.createElement("img")
@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
         welcomeDiv.append(alien)
 
     }
-    firstScreen()
+   
 
 
     // show sign up form
@@ -180,7 +180,18 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const renderGameDiv = () => {
-        // render game
+        console.log("unhidden")
+        gameContainer = document.createElement("iframe")
+        gameContainer.id = "gameContainer"
+        gameContainer.src = "/game.html"
+        gameContainer.style.height = "100%"
+        gameContainer.style.width = "100%"
+        gameContainer.style.margin = "20px"
+        gameContainer.style.padding = "none"
+        gameContainer.style.border = "2px solid #ff1a75"
+        gameContainer.style.boxSizing = "border-box"
+        contentDiv.append(gameContainer)
+        console.log(gameContainer.childNodes)
     }
 
 
@@ -198,6 +209,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-
+    firstScreen()
 
 })
