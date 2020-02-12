@@ -1,13 +1,15 @@
+// class Game extends Phaser.Scene {
+
 ///JS Functions
 
-Array.prototype.random = function () {
-	return this[Math.floor((Math.random()*this.length))];
-  }
+// constructor(){
+// 		super({key: 'Game'});
+// 	}
 
 /// Phaser
 
 const gameWindowWidth = window.innerWidth;
-const gameWindowHight = 500;
+const gameWindowHight = 600;
 
 var config = {
 	type: Phaser.AUTO,
@@ -17,20 +19,22 @@ var config = {
 		default: 'arcade',
 	},
 	scene: {
-		preload: preloadGame,
-		create: createGame,
-		update: updateGame
+		preload: preload,
+		create: create,
+		update: update
 	}
 };
+
 var game = new Phaser.Game(config);
 
 
-function preloadGame() {
+
+function preload(){
 	//function where images are loaded
 	this.load.image('ground', 'assets/giphy.gif');
 	this.load.image('playerRight', 'assets/player_right.png');
 	this.load.image('playerLeft', 'assets/player_left.png');
-	this.load.image('ball', 'assets/ball.png');
+	this.load.image('ball', 'assets/ball.png',1,1);
 
 	this.load.image('blockPink1','assets/pink_block_full.png')
 	this.load.image('blockPink2','assets/pink_block_2.png')
@@ -40,7 +44,9 @@ function preloadGame() {
 
 	this.load.image('blockYellow1','assets/yellow_block_full.png')
 }
-
+Array.prototype.random = function () {
+	return this[Math.floor((Math.random()*this.length))];
+  }
 // Sort out angle randomly but also to prevent soft locks
 
 const arrayX = [-400,-350,-250,250,350,400]
@@ -55,6 +61,8 @@ var cursor;
 var playerRight;
 var playerLeft;
 
+
+var blockPointPlayer = '';
 var scoreRight = 0;
 var scoreLeft = 0;
 var scoreTextPlayerRight;
@@ -80,7 +88,7 @@ var graphics;
 
 
 
-function createGame() {
+function create() {
 	// this.add.image(400, 200, 'ground');
 
 	cursor = this.input.keyboard.createCursorKeys();
@@ -96,8 +104,10 @@ function createGame() {
 	playerLeft = this.physics.add.sprite(20, (gameWindowHight/2), 'playerLeft');
 	playerLeft.setCollideWorldBounds(true);
 	
-
+	// this.ball = this.add.image(config.width/2 -50, config.height/2,'ball')
+	// this.ball.setScale(0.5);
 	ball = this.physics.add.sprite((gameWindowWidth/2), (gameWindowHight/2), 'ball');
+	ball.width = 250;
 
 	ball.setCollideWorldBounds(true);
 	ball.setBounce(1);
@@ -105,7 +115,7 @@ function createGame() {
 	//it do horizontal and vertical movement.
 	ball.setVelocityY(velocityY);
 	ball.setVelocityX(velocityX);
-	console.log(velocityY, velocityX)
+
 
 	this.physics.add.collider(ball, playerLeft, hitPlayerLeft, null, this);
 	this.physics.add.collider(ball, playerRight, hitPlayerRight, null, this);
@@ -140,21 +150,26 @@ function createGame() {
 	// createBlocksTimer = this.time.addEvent({ delay: 1000, callback: createAPinkBlock, callbackScope: this, loop: true });
 
 	this.keyP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
-	this.keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
+	
+	
+	
+	///// change to another scene:
+	this.keyR = this.input.keyboard.on('keyup', function (e){
+		if (e.key == 'r'){
+			console.log("r is down");
+			game.scene.start("TitleScene");
+		}
+	})
 
 }
 
-function updateGame() {
+function update() {
 	if (this.keyP.isDown) {
 		console.log("p is down");
 		game.scene.pause("default");
 	}
-	//   Not working:
-	
-	// if (this.keyR.isDown) {
-	// 	console.log("r is down");
-	// 	game.scene.resume("default")
-	// }
+
+
 
 
 	//repeated events at certain time intervals
@@ -176,22 +191,24 @@ function updateGame() {
 	} else {
 		playerLeft.setVelocityY(0);
 	}
-	// Change to half width of ball pic
+
 	if (ball.x >= (gameWindowWidth - 20)) {
-		scoreLeft += 1;
-		scoreTextPlayerLeft.setText('Score: ' + scoreLeft);
+		// scoreLeft += 1;
+		// scoreTextPlayerLeft.setText('Score: ' + scoreLeft);
 		// ball.velocityX *= -1
 		// ball.velocityY *= -1
 		reset();
 	}
 
 	if (ball.x <= 20) {
-		scoreRight += 1;
-		scoreTextPlayerRight.setText('Score: ' + scoreRight);
+		// scoreRight += 1;
+		// scoreTextPlayerRight.setText('Score: ' + scoreRight);
 		// ball.velocityX *= -1
 		// ball.velocityY *= -1
 		reset();
 	}
+
+	
 
 
 
@@ -199,12 +216,16 @@ function updateGame() {
 
 
 function hitPlayerLeft(ball, playerLeft) {
+	
+
 	velocityX = velocityX - 100;
 	velocityX = velocityX * -1;
 	velocityY = velocityY * -1; //changes the angle whe hit
 	ball.setVelocityX(velocityX);
 	ball.setVelocityY(velocityY);
 
+	blockPointPlayer = "left";
+	
 	if(velocityX > 2000 || velocityX < -2000){
 		velocityX = 2000;;
 		ball.setVelocityX(velocityX);
@@ -213,6 +234,7 @@ function hitPlayerLeft(ball, playerLeft) {
 	if (velocityY == 0){
 		velocityY = arrayY.random();
 	}
+	
 	playerLeft.setVelocityX(0);
 }
 
@@ -221,6 +243,8 @@ function hitPlayerRight(ball, playerRight) {
 	velocityX = velocityX * -1;
 	velocityY = velocityY * -1; //changes the angle whe hit
 	ball.setVelocityX(velocityX);
+
+	blockPointPlayer = "right";
 
 	if(velocityX > 2000 || velocityX < -2000){
 		velocityX = -2000;
@@ -244,8 +268,23 @@ function hitBlock(ball, block) {
 	var timedEvent;
 	timedEvent = this.time.delayedCall(1000, function (){ block.destroy()}, [], this);
 	// timedEvent = this.time.addEvent({ delay: 2000, callback: blockChange, callbackScope: this })
+
+	if (blockPointPlayer === ''){
+		console.log('block hit num found')
+	} else if (blockPointPlayer === 'right'){
+		scoreRight += 100;
+		scoreTextPlayerRight.setText('Score: ' + scoreRight);
+		blockPointPlayer = ''
+	} else if (blockPointPlayer === 'left'){
+		scoreLeft += 100;
+		scoreTextPlayerLeft.setText('Score: ' + scoreLeft);
+		blockPointPlayer = ''
+	}
+
 }
 
+
+//doesnt work:
 function blockHitBlock(block1,block2) {
 	velocityX = velocityX + 10 ;
 	velocityX = velocityX * -1 ;
@@ -259,16 +298,20 @@ function blockHitBlock(block1,block2) {
 
 
 function reset() {
+	//causes double bounce on the side
 	velocityX = arrayX.random();
 	velocityY = arrayY.random();
-	ball.x = gameWindowWidth/2;
-	ball.y = gameWindowHight/2;
+
+	// ball.x = gameWindowWidth/2;
+	// ball.y = gameWindowHight/2;
 	// playerRight.x = 980;
 	// playerRight.y = 200;
 	// playerLeft.x = 0;
 	// playerLeft.y = 200;
 	ball.setVelocityX(velocityX);
 	ball.setVelocityY(velocityY);
+
+	
 }
 
 //Blocks
@@ -292,6 +335,6 @@ function createAPinkBlock() {
 	}
 }
 
-
+// }// scene closer
 
    
