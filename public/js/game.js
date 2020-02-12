@@ -8,8 +8,8 @@
 
 /// Phaser
 
-const gameWindowWidth = window.innerWidth;
-const gameWindowHight = 600;
+const gameWindowWidth = window.innerWidth - 5;
+const gameWindowHight = window.innerHeight - 5;
 
 var config = {
 	type: Phaser.AUTO,
