@@ -52,7 +52,10 @@ function preload() {
 
 	this.load.image('blockYellow1', 'assets/yellow_block_full.png');
 
+	this.load.image('toli','assets/toli.png',10,10)
+
 	this.load.image('heart', 'assets/heart_pixelart.png');
+
 }
 Array.prototype.random = function() {
 	return this[Math.floor(Math.random() * this.length)];
@@ -369,7 +372,8 @@ function createAPinkBlock() {
 	block = this.physics.add.sprite(
 		gameWindowWidth * array0to1.random(),
 		gameWindowHight * array0to1.random(),
-		blocksNamesArray.random()
+		// blocksNamesArray.random()
+		'toli'
 	);
 	this.physics.add.collider(ball, block, hitBlock, null, this);
 
