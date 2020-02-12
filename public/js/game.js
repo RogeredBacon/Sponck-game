@@ -49,13 +49,13 @@ function preload() {
 	this.load.image('blockPink3', 'assets/pink_block_3.png');
 
 	this.load.image('blockGreen1', 'assets/green_block_full.png');
+	this.load.image('blockGreen2', 'assets/green_block_2.png');
 
 	this.load.image('blockYellow1', 'assets/yellow_block_full.png');
 
-	this.load.image('toli','assets/toli.png',10,10)
+	this.load.image('toli', 'assets/toli.png', 10, 10);
 
 	this.load.image('heart', 'assets/heart_pixelart.png');
-
 }
 Array.prototype.random = function() {
 	return this[Math.floor(Math.random() * this.length)];
@@ -178,6 +178,7 @@ function create() {
 	this.physics.add.collider(ball, blockPink1, hitBlock, hitBlock, this);
 	blockPink1.setCollideWorldBounds(true);
 	blockPink1.setBounce(0.5);
+	blockPink1.setName('pink');
 
 	blockGreen1 = this.physics.add.sprite(
 		gameWindowWidth * 0.8,
@@ -187,6 +188,7 @@ function create() {
 	this.physics.add.collider(ball, blockGreen1, hitBlock, null, this);
 	blockGreen1.setCollideWorldBounds(true);
 	blockGreen1.setBounce(0.5);
+	blockGreen1.setName('green');
 
 	/////Time Event
 
@@ -310,8 +312,11 @@ function hitBlock(ball, block) {
 	velocityY = velocityY * -1;
 	ball.setVelocityY(velocityY);
 	ball.setVelocityX(velocityX);
-	block.setTexture('blockPink2');
-
+	if (block.name == 'pink') {
+		block.setTexture('blockPink3');
+	} else if (block.name == 'green') {
+		block.setTexture('blockGreen2');
+	}
 	block.setAngularVelocity(angVel.random());
 
 	var timedEvent;
@@ -383,12 +388,13 @@ function createAPinkBlock() {
 		gameWindowWidth * array0to1.random(),
 		gameWindowHight * array0to1.random(),
 		// blocksNamesArray.random()
-		'toli'
+		'blockPink1'
 	);
 	this.physics.add.collider(ball, block, hitBlock, null, this);
 
 	block.setCollideWorldBounds(true);
 	block.setBounce(0.5);
+	block.setName('pink');
 
 	blocksCreated++;
 
