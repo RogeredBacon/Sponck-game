@@ -124,6 +124,8 @@ function create() {
 	ball.width = 250;
 
 	ball.setCollideWorldBounds(true);
+	ball.setCircle(10);
+	ball.setDamping(0.95);
 	ball.setBounce(1);
 
 	//it do horizontal and vertical movement.
@@ -299,11 +301,15 @@ function hitPlayerRight(ball, playerRight) {
 }
 
 function hitBlock(ball, block) {
+	const angVel = [10, -10, 50, -50, 100, -100];
 	velocityX = velocityX + 10;
 	velocityX = velocityX * -1;
 	velocityY = velocityY * -1;
 	ball.setVelocityY(velocityY);
 	ball.setVelocityX(velocityX);
+	block.setTexture('blockPink2');
+
+	block.setAngularVelocity(angVel.random());
 
 	var timedEvent;
 	timedEvent = this.time.delayedCall(
@@ -352,13 +358,17 @@ const playerStunned = player => {
 };
 
 const lifeLost = (player, lives) => {
-	const direction = [-20, 20];
-	player.state = playerState[1];
-	lives[lives.length - 1].setAcceleration(0, 100);
-	lives[lives.length - 1].setVelocityX(direction.random());
-	lives[lives.length - 1].setVelocityY(-150);
-	lives.pop();
-	console.log('life lost');
+	if (lives.length != 0) {
+		const direction = [-20, 20];
+		player.state = playerState[1];
+		lives[lives.length - 1].setGravityY(700);
+		lives[lives.length - 1].setVelocityX(direction.random());
+		lives[lives.length - 1].setVelocityY(-400);
+		lives.pop();
+		console.log('life lost');
+	} else {
+		console.log('Game Over');
+	}
 };
 
 //Blocks
