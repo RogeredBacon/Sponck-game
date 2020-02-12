@@ -287,6 +287,7 @@ function hitPlayerLeft(ball, playerLeft) {
 }
 
 function hitPlayerRight(ball, playerRight) {
+	const yVel = [100, -100];
 	velocityX = velocityX + 100;
 	velocityX = velocityX * -1;
 	velocityY = velocityY * -1; //changes the angle whe hit
@@ -302,6 +303,7 @@ function hitPlayerRight(ball, playerRight) {
 	if (velocityY == 0) {
 		velocityY = arrayY.random();
 	}
+	ball.setGravityY(velocityY);
 	playerRight.setVelocityX(0);
 }
 
