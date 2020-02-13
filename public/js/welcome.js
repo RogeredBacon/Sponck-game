@@ -1,5 +1,5 @@
 // helper functions
-const getElement = (element) => document.querySelector(element)
+const getElement = element => document.querySelector(element);
 // urls
 const usersURL = "http://localhost:3000/users/"
 const gamesURL = "http://localhost:3000/games/"
@@ -291,6 +291,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // add game div to page 
     const renderGameDiv = () => {
+        stopMusic();
         gameContainer = document.createElement("iframe")
         gameContainer.id = "gameContainer"
         gameContainer.src = "/game.html"
@@ -315,7 +316,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-
+    const stopMusic = () => {
+		document.querySelector('#menu-audio').remove();
+	};
 
 
     firstScreen(currPlayer)
