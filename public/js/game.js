@@ -1,3 +1,5 @@
+
+
 // class Game extends Phaser.Scene {
 
 ///JS Functions
@@ -10,6 +12,8 @@
 
 const gameWindowWidth = window.innerWidth - 5;
 const gameWindowHight = window.innerHeight - 5;
+
+let gameStarted = false;
 
 const playerState = {
 	1: 'Playing',
@@ -38,6 +42,12 @@ var config = {
 var game = new Phaser.Game(config);
 
 function preload() {
+	this.input.on("pointerdown", function() {
+		if (!gameStarted) {
+		  startGame();
+		}
+	  });
+  
 	//function where images are loaded
 	this.load.image('ground', 'assets/giphy.gif');
 	this.load.image('playerRight', 'assets/player_right.png');
@@ -53,23 +63,42 @@ function preload() {
 
 	this.load.image('blockYellow1', 'assets/yellow_block_full.png');
 
-	this.load.image('toli', 'assets/toli.png', 10, 10);
+	this.load.image('toli','assets/toli.png');
+	this.load.image('amir','assets/amir.png');
+	this.load.image('james','assets/james.png');
+	this.load.image('javier','assets/javier.png');
+	this.load.image('jo','assets/jo.png');
+	this.load.image('tomy','assets/tomy.png');
+	this.load.image('mani','assets/mani.png');
+	this.load.image('sara','assets/sara.png');
+	this.load.image('renata','assets/renata.png');
+	this.load.image('mariola','assets/mariola.png');
+	this.load.image('keemo','assets/keemo.png');
 
 	this.load.image('heart', 'assets/heart_pixelart.png');
+
+	this.load.image('particle', 'assets/particle.png');
+
 }
 Array.prototype.random = function() {
 	return this[Math.floor(Math.random() * this.length)];
 };
 // Sort out angle randomly but also to prevent soft locks
 
+
 const arrayX = [-400, -350, -250, 250, 350, 400];
 const arrayY = [-100, -300, 300, 100];
 const array0to1 = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9];
+var milisecondVar = [3000, 5000, 8000];
+
 const blocksNamesArray = ['blockPink1', 'blockGreen1', 'blockYellow1'];
+const blocksWomenPry = ['toli','amir','james','javier','jo','tomy','mani','sara','mariola','renata','keemo'];
+
+let blocksArray = blocksNamesArray;
 
 var ball;
-var velocityX = arrayX.random();
-var velocityY = arrayY.random();
+var velocityX = 0;//arrayX.random();
+var velocityY = 0;//arrayY.random();
 var cursor;
 var playerRight;
 var playerLeft;
@@ -83,6 +112,7 @@ var scoreTextPlayerLeft;
 //Blocks
 
 var block;
+var createBlocks = false;
 
 var blockPink1;
 var blockPink2;
@@ -91,7 +121,7 @@ var blockPink3;
 var blockGreen1;
 
 var createBlocksTimer;
-let blocksCreated = 0;
+var blocksCreated = 0;
 
 //background
 
@@ -104,6 +134,8 @@ function create() {
 
 	this.keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
 	this.keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+	this.keyP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
+	this.keyE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
 
 	playerRight = this.physics.add.sprite(
 		gameWindowWidth - 20,
@@ -113,12 +145,15 @@ function create() {
 	playerRight.setCollideWorldBounds(true);
 	playerRight.state = playerState[0];
 
-	playerLeft = this.physics.add.sprite(20, gameWindowHight / 2, 'playerLeft');
+	playerLeft = this.physics.add.sprite(
+		20, 
+		gameWindowHight / 2, 
+		'playerLeft'
+	);
 	playerLeft.setCollideWorldBounds(true);
 	playerLeft.state = playerState[0];
 
-	// this.ball = this.add.image(config.width/2 -50, config.height/2,'ball')
-	// this.ball.setScale(0.5);
+
 	ball = this.physics.add.sprite(
 		gameWindowWidth / 2,
 		gameWindowHight / 2,
@@ -132,7 +167,7 @@ function create() {
 	ball.setBounce(1);
 
 	//it do horizontal and vertical movement.
-	ball.setVelocityY(velocityY);
+	ball.setVelocityY(velocityX);
 	ball.setVelocityX(velocityX);
 
 	this.physics.add.collider(ball, playerLeft, hitPlayerLeft, null, this);
@@ -180,6 +215,7 @@ function create() {
 	blockPink1.setBounce(0.5);
 	blockPink1.setName('pink');
 
+
 	blockGreen1 = this.physics.add.sprite(
 		gameWindowWidth * 0.8,
 		gameWindowHight * 0.5,
@@ -192,32 +228,52 @@ function create() {
 
 	/////Time Event
 
-	var milisecondVar = [3000, 5000, 8000];
+	
+	function createBlocksFun(createBlocksTimer){
+		createBlocksTimer = this.time.addEvent({
+			delay: milisecondVar.random(),
+			callback: createAPinkBlock,
+			callbackScope: this,
+			loop: true
+			});
+	  }
 
-	// this.time.delayedCall(3000, createAPinkBlock, [], this);
-	createBlocksTimer = this.time.addEvent({
-		delay: milisecondVar.random(),
-		callback: createAPinkBlock,
-		callbackScope: this,
-		loop: true
-	});
-	// createBlocksTimer = this.time.addEvent({ delay: 1000, callback: createAPinkBlock, callbackScope: this, loop: true });
 
-	this.keyP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
 
-	///// change to another scene:
-	this.keyR = this.input.keyboard.on('keyup', function(e) {
-		if (e.key == 'r') {
-			console.log('r is down');
-			game.scene.start('TitleScene');
-		}
-	});
+	///////////////background
+
+	var particles = this.add.particles('particle')
+	var emitter = particles.createEmitter();
+	emitter.setQuantity(20);
+	emitter.startFollow(ball);
+	emitter.setSpeed(6);
+	emitter.setGravity(500, 500);
+
 }
 
 function update() {
-	if (this.keyP.isDown) {
-		console.log('p is down');
-		game.scene.pause('default');
+
+
+	if (this.keyE.isDown) {
+		blocksArray = blocksWomenPry;
+	}
+
+	if (cursor.space.isDown) {
+		velocityY = arrayY.random();
+		velocityX = arrayX.random();
+		ball.setVelocityY(velocityY);
+		ball.setVelocityX(velocityX);
+		createBlocks = true;
+	}
+
+	if (this.keyP.isDown){
+		velocityY = 0;
+		velocityX = 0;
+		ball.setVelocityY(velocityY);
+		ball.setVelocityX(velocityX);
+		createBlocks = false;
+		// startGame();
+
 	}
 
 	//repeated events at certain time intervals
@@ -263,6 +319,10 @@ function update() {
 	} else if (playerRight.state == playerState[1]) {
 		playerStunned(playerRight);
 	}
+
+
+
+	// this.time.delayedCall(3000, createAPinkBlock, [], this);
 }
 
 function hitPlayerLeft(ball, playerLeft) {
@@ -333,7 +393,7 @@ function hitBlock(ball, block) {
 	// timedEvent = this.time.addEvent({ delay: 2000, callback: blockChange, callbackScope: this })
 
 	if (blockPointPlayer === '') {
-		console.log('block hit num found');
+		console.log('Cofee is better than tea');
 	} else if (blockPointPlayer === 'right') {
 		scoreRight += 100;
 		scoreTextPlayerRight.setText('Score: ' + scoreRight);
@@ -346,16 +406,17 @@ function hitBlock(ball, block) {
 }
 
 //doesnt work:
-function blockHitBlock(block1, block2) {
-	velocityX = velocityX + 10;
-	velocityX = velocityX * -1;
-	velocityY = velocityY * -1;
-	block1.setVelocityY(velocityY);
-	block1.setVelocityX(velocityX);
-	s;
-	block2.setVelocityY(velocityY);
-	block2.setVelocityX(velocityX);
-}
+// function blockHitBlock(block1, block2) {
+// 	velocityX = velocityX + 10;
+// 	velocityX = velocityX * -1;
+// 	velocityY = velocityY * -1;
+// 	block1.setVelocityY(velocityY);
+// 	block1.setVelocityX(velocityX);
+// 	s;
+// 	block2.setVelocityY(velocityY);
+// 	block2.setVelocityX(velocityX);
+// }
+
 
 // Player life lost and 'stunned' logic
 
@@ -385,24 +446,31 @@ const lifeLost = (player, lives) => {
 
 ////////////// Time Event
 
-function createAPinkBlock() {
-	block = this.physics.add.sprite(
-		gameWindowWidth * array0to1.random(),
-		gameWindowHight * array0to1.random(),
-		// blocksNamesArray.random()
-		'blockPink1'
-	);
-	this.physics.add.collider(ball, block, hitBlock, null, this);
+	function createAPinkBlock() {
+		block = this.physics.add.sprite(
+			gameWindowWidth * array0to1.random(),
+			gameWindowHight * array0to1.random(),
+			blocksArray.random()
+			// blocksNamesArray.random()
+			// 'blockPink1'   // to change to the broken someone
+		);
+		this.physics.add.collider(ball, block, hitBlock, null, this);
 
-	block.setCollideWorldBounds(true);
-	block.setBounce(0.5);
-	block.setName('pink');
+		block.setCollideWorldBounds(true);
+		block.setBounce(0.5);
+		block.setName('pink'); /// to change the state
 
-	blocksCreated++;
+		blocksCreated++;
 
-	if (blocksCreated === 30) {
-		createBlocksTimer.remove(false);
+		if (blocksCreated === 30) {
+			createBlocksTimer.remove(false);
+		}
 	}
-}
 
-// }// scene closer
+	function startGame() {
+		block.visible = true;
+	  }
+
+
+
+
