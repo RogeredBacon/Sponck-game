@@ -1,12 +1,3 @@
-// class Game extends Phaser.Scene {
-
-///JS Functions
-
-// constructor(){
-// 		super({key: 'Game'});
-// 	}
-
-/// Phaser
 
 const gameWindowWidth = window.innerWidth - 5;
 const gameWindowHight = window.innerHeight - 5;
@@ -95,9 +86,10 @@ function preload() {
 	this.load.image('renata', 'assets/renata.png');
 	this.load.image('mariola', 'assets/mariola.png');
 	this.load.image('keemo', 'assets/keemo.png');
+	
 	this.load.image('particle', 'assets/particle.png');
-
 	this.load.image('heart', 'assets/heart_pixelart.png');
+	this.load.image('explosion','assets/explosion.png')
 
 	// Here be sounds
 	this.load.audio('paddleBall', 'assets/sounds/paddle.wav');
@@ -164,7 +156,6 @@ var createBlocksTimer;
 var blocksCreated = 0;
 
 //background
-
 var graphics;
 
 // Sounds
@@ -176,6 +167,9 @@ let explosionArray;
 let loseLife;
 let gameStart;
 let gameOver;
+
+//efects
+var particlesBlock;
 
 function create() {
 	paddleSound = this.sound.add('paddleBall');
@@ -194,6 +188,10 @@ function create() {
 	this.keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
 	this.keyP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
 	this.keyE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
+
+	///particles
+
+	particlesBlock = this.add.particles('explosion');
 
 	playerRight = this.physics.add.sprite(
 		gameWindowWidth - 20,
@@ -279,24 +277,30 @@ function create() {
 	blockGreen1.setName('green');
 
 	/////Time Event
-
-	function createBlocksFun(createBlocksTimer) {
 		createBlocksTimer = this.time.addEvent({
-			delay: milisecondVar.random(),
-			callback: createAPinkBlock,
-			callbackScope: this,
-			loop: true
-		});
-	}
+		delay: milisecondVar.random(),
+		callback: createAPinkBlock,
+		callbackScope: this,
+		loop: true
+	});
 
 	///////////////background
 
 	var particles = this.add.particles('particle');
 	var emitter = particles.createEmitter();
-	emitter.setQuantity(20);
+	emitter.setQuantity(5);
 	emitter.startFollow(ball);
-	emitter.setSpeed(6);
+	emitter.setSpeed(100);
 	emitter.setGravity(500, 500);
+
+	var particles2 = this.add.particles('particle');
+	var emitter2 = particles.createEmitter();
+	emitter2.setQuantity(20);
+	emitter2.startFollow(ball);
+	emitter2.setSpeed(6000);
+	emitter2.setGravity(500, 500);
+
+	
 }
 
 function update() {
@@ -431,13 +435,33 @@ function hitBlock(ball, block) {
 	timedEvent = this.time.delayedCall(
 		1000,
 		function() {
+
+			//explosion 
+			var emitter3 = particlesBlock.createEmitter({
+				alpha: { start: 1, end: 0 },
+				scale: { start: 1.5, end: 4.5 },
+				//tint: { start: 0xff945e, end: 0xff945e },
+				speed: 20,
+				accelerationY: block.accelerationY * -1,
+				angle: { min: -85, max: -95 },
+				rotate: { min: -180, max: 180 },
+				lifespan: { min: 50, max: 250 },
+				blendMode: 'ADD',
+				frequency: 20,
+				maxParticles: 6,
+				// x: 400,
+				// y: 300
+				z: 1
+			});
+			emitter3.startFollow(block);
+
 			explosionArray.random().play();
+
 			block.destroy();
 		},
 		[],
 		this
 	);
-	// timedEvent = this.time.addEvent({ delay: 2000, callback: blockChange, callbackScope: this })
 
 	if (blockPointPlayer === '') {
 		console.log('Cofee is better than tea');
@@ -451,18 +475,6 @@ function hitBlock(ball, block) {
 		blockPointPlayer = '';
 	}
 }
-
-//doesnt work:
-// function blockHitBlock(block1, block2) {
-// 	velocityX = velocityX + 10;
-// 	velocityX = velocityX * -1;
-// 	velocityY = velocityY * -1;
-// 	block1.setVelocityY(velocityY);
-// 	block1.setVelocityX(velocityX);
-// 	s;
-// 	block2.setVelocityY(velocityY);
-// 	block2.setVelocityX(velocityX);
-// }
 
 // Player life lost and 'stunned' logic
 
@@ -504,8 +516,6 @@ function createAPinkBlock() {
 		gameWindowWidth * array0to1.random(),
 		gameWindowHight * array0to1.random(),
 		blocksArray.random()
-		// blocksNamesArray.random()
-		// 'blockPink1'   // to change to the broken someone
 	);
 	this.physics.add.collider(ball, block, hitBlock, null, this);
 
