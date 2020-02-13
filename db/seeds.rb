@@ -8,18 +8,20 @@
 
 require 'faker'
 
-User.delete_all
+# User.delete_all
 
-Game.delete_all
+# Game.delete_all
 
-u1 = User.create(username: Faker::Name.unique.first_name )
-u2 = User.create(username: Faker::Name.unique.first_name )
-u3 = User.create(username: Faker::Name.unique.first_name )
-u4 = User.create(username: Faker::Name.unique.first_name )
+# u1 = User.create(username: Faker::Name.unique.first_name )
+# u2 = User.create(username: Faker::Name.unique.first_name )
+# u3 = User.create(username: Faker::Name.unique.first_name )
+# u4 = User.create(username: Faker::Name.unique.first_name )
 
-g1 = Game.create(user: u1, score: rand(0..500))
-g2 = Game.create(user: u2, score: rand(0..500))
-g3 = Game.create(user: u3, score: rand(0..500))
-g4 = Game.create(user: u4, score: rand(0..500))
-g5 = Game.create(user: u1, score: rand(0..500))
-g6 = Game.create(user: u2, score: rand(0..500))
+# g1 = Game.create(user: u1, score: rand(0..500))
+# g2 = Game.create(user: u2, score: rand(0..500))
+# g3 = Game.create(user: u3, score: rand(0..500))
+# g4 = Game.create(user: u4, score: rand(0..500))
+# g5 = Game.create(user: u1, score: rand(0..500))
+# g6 = Game.create(user: u2, score: rand(0..500))
+
+# 6.times do Game.create(user: User.find(rand(1..4)), score: rand(0..500)) end

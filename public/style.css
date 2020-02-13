@@ -1,6 +1,5 @@
 * { 
-    
-    padding: 0;
+    /* padding: 0; */
     color: #ff1a75;
     
 }
@@ -10,6 +9,15 @@ body {
     height: 100%;
     background-color: black;
     font-family: 'Orbitron', sans-serif;
+}
+
+h1, h2, h3, h4, p {
+    display: block;
+    padding-top: 0.2em;
+    margin-block-start: 10px;
+    margin-block-end: 10px;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
 }
 
 button {
@@ -23,6 +31,50 @@ input {
     font-size: 20px;
 }
 
+
+td, th {
+    font-size: 25px;
+    text-align: left;
+    border-spacing: 5px, 2px;
+}
+
+td, .playerNameHeader, #name {
+    color: #00ff00;
+}
+
+ul {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+li {
+    position: relative;
+    z-index: 50;
+}
+/* 
+li a {
+  display: block;
+  color:  #F4FF00;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+} */
+
+/* li a:hover {
+    color: #00ff00;
+} */
+
+.header-item{
+    font-family: 'Press Start 2P', cursive;
+}
+
 .welcome {
     color: #F4FF00;
 }
@@ -33,7 +85,7 @@ input {
     align-items: center;
     justify-content: center;
     text-align: center;
-    margin: 30px 20px;
+    margin: 10px;
 }
 
 .inline-container {
@@ -46,8 +98,8 @@ input {
 
 .inline-item {
     display: flex;
-    padding: 20px;
-    margin: 30px;
+    padding: 20px 10px;
+    margin: 10px;
 }
 
 .forms {
@@ -55,25 +107,34 @@ input {
 }
 
 .secondary {
-    font-size: 30px;
+    color: #F4FF00;
+    font-size: 35px;
 }
-/* .submit {
+
+input[type="submit" i] {
+    -webkit-appearance: none;
     padding: 5px;
     font-size: 16px;
     font-family: 'Orbitron', sans-serif;
-    display: flex;
-    align-items: center;
-    align-self: center;
-} */
+} 
+
+#leaderBoardDiv {
+    width: 50%;
+}
 
 #contentDiv {
-    position: relative;
-    height: 80vh;
+    position: static;
+    
+    height: 70vh;
     margin: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+}
+
+#alien {
+    height: 200px;
 }
 
 /* iframe {
@@ -95,9 +156,10 @@ input {
 } */
 
 #gameHeader {
+
     padding: 15px;
     height: 10vh;
-    font-family: 'Press Start 2P', cursive;
+    /* font-family: 'Press Start 2P', cursive; */
     font-size: 70px;
 }
 

@@ -1,14 +1,20 @@
 // helper functions
-const getElement = (element) => document.querySelector(element)
+const getElement = element => document.querySelector(element);
 // urls
 const usersURL = "http://localhost:3000/users/"
+const gamesURL = "http://localhost:3000/games/"
+
+const players = [{ player: "Player 1" }, { player: "Player 2" }]
+let currPlayer = players[0]
 
 document.addEventListener("DOMContentLoaded", () => {
 
     // elements
+    const headerBar = getElement("#headerBar")
     const gameHeader = getElement("#gameHeader")
     const contentDiv = getElement("#contentDiv")
     const welcomeDiv = getElement("#welcomeDiv")
+    
     const signUpDiv = getElement("#signUpDiv")
     const loginDiv = getElement("#loginDiv")
     // const gameContainer = getElement("#gameContainer")
@@ -19,41 +25,48 @@ document.addEventListener("DOMContentLoaded", () => {
     const loggedInPage = getElement("#loggedInPage")
     const newGameButton = getElement("#newGameButton")
     const scoreBoardButton = getElement("#scoreBoardButton")
+    const newGamePage = getElement("#newGamePage")
+    const addPlayer2Button = getElement("#addPlayer2Button")
+    const playSelfButton = getElement("#playSelfButton")
+    const leaderBoardDiv = getElement("#leaderBoardDiv")
+    const gameDiv = getElement("gameDiv")
 
-
-    const userDetails = {}
+    const playerNameHeaders = document.querySelectorAll(".playerNameHeader")
+    let notFound
+    let userTaken
 
 
     // make item hidden
     const hideItem = (item) => item.classList.add("hidden")
     const unHideItem = (item) => item.classList.remove("hidden")
+    const hideAll = () => {for(const item of document.querySelectorAll(".div-item")) { hideItem(item)}}
 
     // first screen hide everything but buttons for login or signup
-    const firstScreen = () => {
-        hideItem(signUpDiv)
-        hideItem(loginDiv)
-        // hideItem(gameContainer)
-        hideItem(loggedInPage)
+    const firstScreen = (playerDeets) => {
+        headerBar.innerHTML=""
+        hideAll()
+        unHideItem(welcomeDiv)
 
-        alien = document.createElement("img")
-        alien.src = "/assets/alien.png"
-        alien.style.height = "200px"
-        alien.style.float = "right"
-        welcomeDiv.append(alien)
-
+        for(const playerNo of playerNameHeaders){
+            playerNo.innerText = currPlayer.player
+        }
     }
    
 
 
     // show sign up form
     signUpButton.addEventListener('click', (e) => {
-        hideItem(welcomeDiv)
+        hideAll()
+        if (getElement("#notFound")) { notFound.remove() }
+        if (getElement("#userTaken")) { userTaken.remove() }
         unHideItem(signUpDiv)
     })
 
     // show log in form
     loginButton.addEventListener('click', (e) => {
-        hideItem(welcomeDiv)
+        hideAll()
+        if (getElement("#notFound")) { notFound.remove() }
+        if (getElement("#userTaken")) { userTaken.remove() }
         unHideItem(loginDiv)
     })
 
@@ -61,7 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // find user when logging in
     loginForm.addEventListener("submit", (e) => {
         e.preventDefault()
-        userForm = loginForm.querySelector(".username").value.toUpperCase()
+        let userForm = loginForm.querySelector(".username").value.toUpperCase()
         
         e.target.reset()
 
@@ -71,11 +84,12 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     // find a user
     const findUser = (users, userForm) => {
+        // let player = 
         for(const user of users){
-            userName = user.username.toUpperCase()
+            let userName = user.username.toUpperCase()
             if (userName == userForm) {
-                userDetails.username = userName
-                userDetails.id = user.id
+                currPlayer.username = userName
+                currPlayer.id = user.id
                 return loggedIn()
             }
         }
@@ -83,22 +97,22 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     // not found
     const userNotFound = () => {
-        if (!getElement("#notFound")) {
+        // if (!getElement("#notFound")) {
             notFound = document.createElement("div")
             notFound.innerText = "Sorry, we couldn't find that user, try again!"
             notFound.style.color = "#00ff00"
             notFound.id = "notFound"
             notFound.classList = "center-item"
             welcomeDiv.append(notFound)
-        }
-        hideItem(loginDiv)
+        // }
+        hideAll()
         unHideItem(welcomeDiv)
     }
 
     // create user
     signupForm.addEventListener("submit", (e) => {
         e.preventDefault()
-        userForm = signupForm.querySelector(".username").value.toUpperCase()
+        let userForm = signupForm.querySelector(".username").value.toUpperCase()
         
         e.target.reset()
 
@@ -110,7 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // check if user exists in db, if exists give error, if not create in db
     const createUser = (users, userForm) => {
         for(const user of users){
-            userName = user.username.toUpperCase()
+            let userName = user.username.toUpperCase()
             if (userName == userForm) {
                 return userExists()
             }
@@ -127,8 +141,8 @@ document.addEventListener("DOMContentLoaded", () => {
         fetch(usersURL, configObj)
             .then( resp => resp.json())
             .then( user => {
-                userDetails.username = user.username
-                userDetails.id = user.id
+                currPlayer.username = user.username
+                currPlayer.id = user.id
                 return loggedIn()
             } ) 
     }
@@ -143,44 +157,141 @@ document.addEventListener("DOMContentLoaded", () => {
             userTaken.classList = "center-item"
             welcomeDiv.append(userTaken)
         }
-        hideItem(signUpDiv)
+        hideAll()
         unHideItem(welcomeDiv)
     }
 
     // take them to the logged in page
     const loggedIn = () => {
-        hideItem(signUpDiv)
-        hideItem(loginDiv)
+        hideAll()
         unHideItem(loggedInPage)
-        getElement("#name").innerText = userDetails.username
+        getElement("#name").innerText = currPlayer.username
+        if (currPlayer == players[1]) {
+            let player2header = document.querySelector("#player2header")
+            player2header.innerText = "Player 2 - " + currPlayer.username
+        } else { createHeaderBar() } 
     }
+
+
+// after logging in pages:
+
 
     // create scoreboard table & display
     scoreBoardButton.addEventListener("click", (e) => {
-        createHeaderBar()
+        // createHeaderBar()
+        hideAll()
         showScoreBoard()
     })
 
     newGameButton.addEventListener("click", (e) => {
-        createHeaderBar()
-        renderGameDiv()
+        // createHeaderBar()
+        hideAll()
+        // add option to log in a second player
+        unHideItem(newGamePage)
     })
 
 
     // need to add elements for log out, new game, show scoreboard
     const createHeaderBar = () => {
-        hideItem(loggedInPage)
-        headerBar = document.createElement("header")
-        headerBar.innerText = userDetails.username
-        getElement("body").prepend(headerBar)
+        // hideAll()
+        const headerItems = document.createElement("ul")
+        
+        const player1 = document.createElement("li")
+        player1.innerText = "Player 1 - " + currPlayer.username
+
+        const homeLink = document.createElement("li")
+        homeLink.innerText = "NEW GAME"
+        homeLink.style.color = "#00ff00"
+        homeLink.addEventListener("click", () => {
+            hideAll()
+            unHideItem(newGamePage)
+        })
+
+        const scoreBoardLink = document.createElement("li")
+        scoreBoardLink.innerText = "LEADER BOARD"
+        scoreBoardLink.style.color = "#00ff00"
+        scoreBoardLink.addEventListener("click", () => {
+            hideAll()
+            showScoreBoard()
+        })
+        
+        const player2 = document.createElement("li")
+        player2.id = "player2header"
+
+        headerItems.append(player1, scoreBoardLink, homeLink, player2)
+        headerBar.append(headerItems)
+            // need to add elements for high scores? log out, show scoreboard
+        
     }
 
+
+    // show scoreboard
     const showScoreBoard = () => {
-        // create scoreboard table
+        hideAll()
+        leaderBoardDiv.innerHTML = ""
+
+        const leaderBoardHeader = document.createElement("h2")
+        leaderBoardHeader.id = "leaderBoardHeader"
+        leaderBoardHeader.innerText = "LEADER BOARD"
+        leaderBoardHeader.classList = "header-item, secondary"
+
+        const leaderBoard = document.createElement("table")
+        const headers = document.createElement("tr")
+        
+        const positionHeader = document.createElement("th")
+        positionHeader.innerText = "POSITION"
+        const nameHeader = document.createElement("th")
+        nameHeader.innerText = "USER"
+        const scoreHeader = document.createElement("th")
+        scoreHeader.innerText = "SCORE"
+        
+        createTableRows(leaderBoard)
+
+        headers.append(positionHeader, nameHeader, scoreHeader)
+        leaderBoard.append(headers)
+        leaderBoardDiv.append(leaderBoardHeader, leaderBoard)
+        unHideItem(leaderBoardDiv)
+        
     }
 
+    const createTableRows = (leaderBoard) => {
+        fetch(gamesURL)
+            .then( resp => resp.json())
+            .then( games => {
+                // sort games by highes score descending
+                let sortedGames = games.sort((a,b) => b.score - a.score)
+                // create each row element
+                for (let i = 0; i < 10; i++) {
+                    const game = sortedGames[i];
+                    const row = document.createElement("tr")
+                    const position = document.createElement("td")
+                    position.innerText = (i + 1)
+                    const playerName = document.createElement("td")
+                    playerName.innerText = game.user.username
+                    const gameScore = document.createElement("td")
+                    gameScore.innerText = game.score
+
+                    row.append(position, playerName, gameScore)
+                    leaderBoard.append(row)
+                }
+            })
+
+    }
+// button to log in 2nd player
+    addPlayer2Button.addEventListener("click", () => {
+        currPlayer = players[1]
+        firstScreen(currPlayer)
+    })
+
+// button to go straight to gamne without saving 2nd player
+    playSelfButton.addEventListener("click", () => {
+        hideAll()
+        renderGameDiv()
+    })
+
+// add game div to page 
     const renderGameDiv = () => {
-        console.log("unhidden")
+        stopMusic();
         gameContainer = document.createElement("iframe")
         gameContainer.id = "gameContainer"
         gameContainer.src = "/game.html"
@@ -190,8 +301,7 @@ document.addEventListener("DOMContentLoaded", () => {
         gameContainer.style.padding = "none"
         gameContainer.style.border = "2px solid #ff1a75"
         gameContainer.style.boxSizing = "border-box"
-        contentDiv.append(gameContainer)
-        console.log(gameContainer.childNodes)
+        gameDiv.append(gameContainer)
     }
 
 
@@ -206,9 +316,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+    const stopMusic = () => {
+		document.querySelector('#menu-audio').remove();
+	};
 
 
-
-    firstScreen()
+    firstScreen(currPlayer)
 
 })
+
+
+// to do:
+
+// - create second player login
+// - create top nav links (change header to navbar)
+// - save game score to games table
+// - add welcome & instructions before game start
+// - add high score to top navbar
+// - change colours and fonts of scores in game window

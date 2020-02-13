@@ -16,53 +16,69 @@
 	</head>
 
 	<body>
-		<div id="gameHeader" class="center-item">
-			<h1>Sponck</h1>
+		<audio
+		src="https://trash80.com/files/trash80_weeklybeats-2012_1_starfield-sonnet.mp3"
+		autoplay
+		loop
+		id="menu-audio"
+		>
+		Your browser does not support the audio element.
+		</audio>
+
+		<header id = "headerBar"></header>
+		<div id="gameHeader" class="center-item header-item">
+			<h1>SPONCK</h1>
 		</div>
 
 		<div id="contentDiv">
-			<div id="welcomeDiv" class="secondary center-item">
-				<h2 class="welcome">Welcome to the Alien Sponck Party!</h2>
-				<br />
+
+			<div id="welcomeDiv" class="secondary center-item div-item">
+				<p class ="welcome">Welcome to the Alien Sponck Party!</p>
+				<p class="playerNameHeader"></p>
 				<span id="signInButtons" class="inline-container">
-					<button id="loginButton" class="inline-item">
-						I've been here before
-					</button>
-					<button id="signUpButton" class="inline-item">
-						I'm new to the party
-					</button> </span
-				><br />
+					<button id="loginButton" class="inline-item">I've been here before</button>
+					<button id="signUpButton" class="inline-item">I'm new to the party</button>
+				</span><br>
+				<img id="alien" src="/assets/alien.png">
 			</div>
 
-			<div id="signUpDiv" class="center-item forms secondary">
-				<h3>Sign Up</h3>
-				<br />
+			<div id="signUpDiv" class="center-item forms secondary div-item">
+				<p class="playerNameHeader"></p>
+				<p>Sign Up</p>
+				<br>
 				<form id="signupForm">
-					<label>Create User Name: </label
-					><input class="username" type="text" />
-					<input class="submit" type="Submit" value="Take me to the party!" />
+					<label>Create User Name: </label><input class="username" type="text" required>
+					<input class="submit" type="Submit" value="Take me to the party!">
 				</form>
 			</div>
 
-			<div id="loginDiv" class="center-item forms secondary">
-				<h3>Sign In</h3>
-				<br />
+			<div id="loginDiv" class="center-item forms secondary div-item">
+				<p class="playerNameHeader"></p>
+				<p>Sign In</p>
+				<br>
 				<form id="loginForm">
-					<label>User Name: </label><input class="username" type="text" />
-					<input class="submit" type="Submit" value="Take me to the party!" />
+					<label>User Name: </label><input class="username" type="text" required>
+					<input class="submit" type="Submit" value="Take me to the party!">
 				</form>
 			</div>
 
-			<div id="loggedInPage" class="secondary center-item">
-				<h2 class="welcome">Welcome human!</h2>
-				<br />
-				<h3>You're logged in as<span id="name"></span></h3>
-				<button id="newGameButton" class="inline-item">Start a new game</button
-				><br />
-				<button id="scoreBoardButton" class="inline-item">
-					See the scoreboard
-				</button>
+			<div id="loggedInPage" class="secondary center-item div-item">
+				<p class ="welcome"> Welcome human! </p><br>
+				<p><span id="name"></span> you're logged in as <span class="playerNameHeader"></span></p>
+				<button id="newGameButton" class="inline-item">Start a new game</button>
+				<button id="scoreBoardButton" class="inline-item">See the scoreboard</button>
 			</div>
+
+			<div id="newGamePage" class="secondary center-item div-item">
+				<p class ="welcome">Let's get this Alien Sponck Party started!!</p><br>
+				<p><span id="name"></span> Would you like to add a second player or play against yourself?</p>
+				<button id="addPlayer2Button" class="inline-item">Add Another Human</button>
+				<button id="playSelfButton" class="inline-item">Play My Alien Alterego</button>
+			</div>
+
+			<div id="leaderBoardDiv" class="secondary center-item div-item"></div>
+			<div id="gameDiv" class="secondary center-item div-item"></div>
+
 		</div>
 	</body>
 </html>
