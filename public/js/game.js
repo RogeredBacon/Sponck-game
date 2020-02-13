@@ -25,6 +25,9 @@ var config = {
 	type: Phaser.AUTO,
 	width: gameWindowWidth,
 	height: gameWindowHight,
+	audio: {
+		disableWebAudio: true
+	},
 	physics: {
 		default: 'arcade'
 	},
@@ -33,6 +36,26 @@ var config = {
 		create: create,
 		update: update
 	}
+};
+
+const pingConfig = {
+	mute: false,
+	volume: 1,
+	rate: 1,
+	detune: 0,
+	seek: 0,
+	loop: false,
+	delay: 0
+};
+
+const paddleConfig = {
+	mute: false,
+	volume: 0.8,
+	rate: 1,
+	detune: 0,
+	seek: 0,
+	loop: false,
+	delay: 0
 };
 
 var game = new Phaser.Game(config);
@@ -56,10 +79,20 @@ function preload() {
 	this.load.image('toli', 'assets/toli.png', 10, 10);
 
 	this.load.image('heart', 'assets/heart_pixelart.png');
+
+	// Here be sounds
+	this.load.audio('paddleBall', 'assets/sounds/paddle.wav');
+	this.load.audio('pingPickup', 'assets/sounds/p-ping.mp3');
+	this.load.audio('explosion1', 'assets/sounds/explosion1.wav');
+	this.load.audio('explosion2', 'assets/sounds/explosion2.wav');
+	this.load.audio('gameStart', 'assets/sounds/gameStart.wav');
+	this.load.audio('loseLife', 'assets/sounds/loseLife.wav');
+	this.load.audio('gameOver', 'assets/sounds/gameOver.wav');
 }
 Array.prototype.random = function() {
 	return this[Math.floor(Math.random() * this.length)];
 };
+
 // Sort out angle randomly but also to prevent soft locks
 
 const arrayX = [-400, -350, -250, 250, 350, 400];
@@ -97,8 +130,26 @@ let blocksCreated = 0;
 
 var graphics;
 
+// Sounds
+let pingPickup;
+let paddleSound;
+let explosion1;
+let explosion2;
+let explosionArray;
+let loseLife;
+let gameStart;
+let gameOver;
+
 function create() {
-	// this.add.image(400, 200, 'ground');
+	paddleSound = this.sound.add('paddleBall');
+	pingPickup = this.sound.add('pingPickup');
+	explosion1 = this.sound.add('explosion1');
+	explosion2 = this.sound.add('explosion2');
+	loseLife = this.sound.add('loseLife');
+	gameStart = this.sound.add('gameStart');
+	gameOver = this.sound.add('gameOver');
+
+	explosionArray = [explosion1, explosion2];
 
 	cursor = this.input.keyboard.createCursorKeys();
 
@@ -212,6 +263,8 @@ function create() {
 			game.scene.start('TitleScene');
 		}
 	});
+
+	gameStart.play();
 }
 
 function update() {
@@ -266,6 +319,7 @@ function update() {
 }
 
 function hitPlayerLeft(ball, playerLeft) {
+	paddleSound.play(paddleConfig);
 	velocityX = velocityX - 100;
 	velocityX = velocityX * -1;
 	velocityY = velocityY * -1; //changes the angle whe hit
@@ -287,6 +341,7 @@ function hitPlayerLeft(ball, playerLeft) {
 }
 
 function hitPlayerRight(ball, playerRight) {
+	paddleSound.play(paddleConfig);
 	const yVel = [100, -100];
 	velocityX = velocityX + 100;
 	velocityX = velocityX * -1;
@@ -308,6 +363,7 @@ function hitPlayerRight(ball, playerRight) {
 }
 
 function hitBlock(ball, block) {
+	pingPickup.play(pingConfig);
 	const angVel = [10, -10, 50, -50, 100, -100];
 	velocityX = velocityX + 10;
 	velocityX = velocityX * -1;
@@ -325,6 +381,7 @@ function hitBlock(ball, block) {
 	timedEvent = this.time.delayedCall(
 		1000,
 		function() {
+			explosionArray.random().play();
 			block.destroy();
 		},
 		[],
@@ -368,6 +425,7 @@ const playerStunned = player => {
 };
 
 const lifeLost = (player, lives) => {
+	loseLife.play();
 	if (lives.length != 0) {
 		const direction = [-20, 20];
 		player.state = playerState[1];
@@ -377,6 +435,7 @@ const lifeLost = (player, lives) => {
 		lives.pop();
 		console.log('life lost');
 	} else {
+		gameOver.play();
 		console.log('Game Over');
 	}
 };
