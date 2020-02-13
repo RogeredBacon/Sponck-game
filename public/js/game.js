@@ -437,6 +437,11 @@ const lifeLost = (player, lives) => {
 	} else {
 		gameOver.play();
 		console.log('Game Over');
+		if (player == playerLeft) {
+			console.log('Player Right won! With ' + scoreRight + ' points!');
+		} else {
+			console.log('Player Left won! With ' + scoreLeft + ' points!');
+		}
 	}
 };
 
