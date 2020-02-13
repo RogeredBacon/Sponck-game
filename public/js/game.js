@@ -60,15 +60,19 @@ const paddleConfig = {
 	delay: 0
 };
 
+const soundtrackConfig = {
+	mute: false,
+	volume: 1,
+	rate: 1,
+	detune: 0,
+	seek: 0,
+	loop: false,
+	delay: 0
+};
+
 var game = new Phaser.Game(config);
 
 function preload() {
-	this.input.on('pointerdown', function() {
-		if (!gameStarted) {
-			startGame();
-		}
-	});
-
 	//function where images are loaded
 	this.load.image('ground', 'assets/giphy.gif');
 	this.load.image('playerRight', 'assets/player_right.png');
@@ -107,6 +111,7 @@ function preload() {
 	this.load.audio('gameStart', 'assets/sounds/gameStart.wav');
 	this.load.audio('loseLife', 'assets/sounds/loseLife.wav');
 	this.load.audio('gameOver', 'assets/sounds/gameOver.wav');
+	this.load.audio('soundtrack', 'assets/sounds/Theia-Trash80.mp3');
 }
 Array.prototype.random = function() {
 	return this[Math.floor(Math.random() * this.length)];
@@ -176,6 +181,7 @@ let explosionArray;
 let loseLife;
 let gameStart;
 let gameOver;
+let soundtrack;
 
 function create() {
 	paddleSound = this.sound.add('paddleBall');
@@ -185,6 +191,7 @@ function create() {
 	loseLife = this.sound.add('loseLife');
 	gameStart = this.sound.add('gameStart');
 	gameOver = this.sound.add('gameOver');
+	soundtrack = this.sound.add('soundtrack');
 
 	explosionArray = [explosion1, explosion2];
 
@@ -293,10 +300,12 @@ function create() {
 
 	var particles = this.add.particles('particle');
 	var emitter = particles.createEmitter();
-	emitter.setQuantity(20);
+	emitter.setQuantity(30);
 	emitter.startFollow(ball);
-	emitter.setSpeed(6);
+	emitter.setSpeed(6000);
 	emitter.setGravity(500, 500);
+
+	gameStart.play();
 }
 
 function update() {
@@ -305,6 +314,7 @@ function update() {
 	}
 
 	if (cursor.space.isDown) {
+		soundtrack.play(soundtrackConfig);
 		velocityY = arrayY.random();
 		velocityX = arrayX.random();
 		ball.setVelocityY(velocityY);
