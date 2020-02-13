@@ -251,6 +251,7 @@ function create() {
 			'heart'
 		);
 		life.scale = 0.3;
+		life.setDepth(100);
 		playerLeftLives[index - 1] = life;
 	}
 
@@ -261,6 +262,7 @@ function create() {
 			'heart'
 		);
 		life.scale = 0.3;
+		life.setDepth(100);
 		playerRightLives[index - 1] = life;
 	}
 
