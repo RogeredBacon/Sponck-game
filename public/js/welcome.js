@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const gameHeader = getElement("#gameHeader")
     const contentDiv = getElement("#contentDiv")
     const welcomeDiv = getElement("#welcomeDiv")
-    const playerNameHeader = getElement("#playerNameHeader")
+    
     const signUpDiv = getElement("#signUpDiv")
     const loginDiv = getElement("#loginDiv")
     // const gameContainer = getElement("#gameContainer")
@@ -21,42 +21,50 @@ document.addEventListener("DOMContentLoaded", () => {
     const loggedInPage = getElement("#loggedInPage")
     const newGameButton = getElement("#newGameButton")
     const scoreBoardButton = getElement("#scoreBoardButton")
+    const newGamePage = getElement("#newGamePage")
+    const addPlayer2Button = getElement("#addPlayer2Button")
+    const playSelfButton = getElement("#playSelfButton")
 
+    const playerNameHeaders = document.querySelectorAll(".playerNameHeader")
 
-    const userDetails = {}
-
+    // const player1Details = 
+    // const player2Details = 
+    const players = [{ player: "Player 1" }, { player: "Player 2" }]
+    let currPlayer = players[0]
 
     // make item hidden
     const hideItem = (item) => item.classList.add("hidden")
     const unHideItem = (item) => item.classList.remove("hidden")
+    const hideAll = () => {for(const item of document.querySelectorAll(".div-item")) { hideItem(item)}}
 
     // first screen hide everything but buttons for login or signup
-    const firstScreen = (player) => {
-        hideItem(signUpDiv)
-        hideItem(loginDiv)
-        // hideItem(gameContainer)
-        hideItem(loggedInPage)
+    const firstScreen = (playerDeets) => {
+        // hideItem(signUpDiv)
+        // hideItem(loginDiv)
+        // // hideItem(gameContainer)
+        // hideItem(loggedInPage)
+        // hideItem(newGamePage)
 
-        playerNameHeader.innerText = player
+        hideAll()
+        unHideItem(welcomeDiv)
 
-        alien = document.createElement("img")
-        alien.src = "/assets/alien.png"
-        alien.style.height = "200px"
-        alien.style.float = "right"
-        welcomeDiv.append(alien)
+        for(const playerNo of playerNameHeaders){
+            playerNo.innerText = currPlayer.player
+        }
+
     }
    
 
 
     // show sign up form
     signUpButton.addEventListener('click', (e) => {
-        hideItem(welcomeDiv)
+        hideAll()
         unHideItem(signUpDiv)
     })
 
     // show log in form
     loginButton.addEventListener('click', (e) => {
-        hideItem(welcomeDiv)
+        hideAll()
         unHideItem(loginDiv)
     })
 
@@ -74,11 +82,12 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     // find a user
     const findUser = (users, userForm) => {
+        // let player = 
         for(const user of users){
             let userName = user.username.toUpperCase()
             if (userName == userForm) {
-                userDetails.username = userName
-                userDetails.id = user.id
+                currPlayer.username = userName
+                currPlayer.id = user.id
                 return loggedIn()
             }
         }
@@ -94,7 +103,7 @@ document.addEventListener("DOMContentLoaded", () => {
             notFound.classList = "center-item"
             welcomeDiv.append(notFound)
         }
-        hideItem(loginDiv)
+        hideAll()
         unHideItem(welcomeDiv)
     }
 
@@ -130,8 +139,8 @@ document.addEventListener("DOMContentLoaded", () => {
         fetch(usersURL, configObj)
             .then( resp => resp.json())
             .then( user => {
-                userDetails.username = user.username
-                userDetails.id = user.id
+                currPlayer.username = user.username
+                currPlayer.id = user.id
                 return loggedIn()
             } ) 
     }
@@ -146,17 +155,20 @@ document.addEventListener("DOMContentLoaded", () => {
             userTaken.classList = "center-item"
             welcomeDiv.append(userTaken)
         }
-        hideItem(signUpDiv)
+        hideAll()
         unHideItem(welcomeDiv)
     }
 
     // take them to the logged in page
     const loggedIn = () => {
-        hideItem(signUpDiv)
-        hideItem(loginDiv)
+        hideAll()
         unHideItem(loggedInPage)
-        getElement("#name").innerText = userDetails.username
+        getElement("#name").innerText = currPlayer.username
     }
+
+
+// after logging in pages:
+
 
     // create scoreboard table & display
     scoreBoardButton.addEventListener("click", (e) => {
@@ -166,21 +178,60 @@ document.addEventListener("DOMContentLoaded", () => {
 
     newGameButton.addEventListener("click", (e) => {
         createHeaderBar()
-        renderGameDiv()
+        // add option to log in a second player
+        unHideItem(newGamePage)
     })
 
 
     // need to add elements for log out, new game, show scoreboard
     const createHeaderBar = () => {
-        hideItem(loggedInPage)
+        hideAll()
         const headerBar = document.createElement("header")
-        headerBar.innerText = userDetails.username
-        getElement("body").prepend(headerBar)
-            // need to add elements for log out, new game, show scoreboard
-    }
+        headerBar.id = "headerBar"
+        const headerItems = document.createElement("ul")
+        
+        const player1 = document.createElement("li")
+        player1.innerText = "Player 1 - " + currPlayer.username
 
+        const homeLink = document.createElement("li")
+        homeLink.innerText = "HOME"
+        homeLink.style.color = "#00ff00"
+        homeLink.addEventListener("click", () => {
+            hideAll()
+            showScoreBoard()
+        })
+
+        const scoreBoardLink = document.createElement("li")
+        scoreBoardLink.innerText = "LEADER BOARD"
+        scoreBoardLink.style.color = "#00ff00"
+        scoreBoardLink.addEventListener("click", () => {
+            hideAll()
+            showScoreBoard()
+        })
+        
+        const player2 = document.createElement("li")
+        player2.id = "player2header"
+
+        headerItems.append(player1, scoreBoardLink, player2)
+        headerBar.append(headerItems)
+        getElement("body").prepend(headerBar)
+            // need to add elements for high scores? log out, show scoreboard
+        
+    }
+// event listener for scoreboard link
+    // const takeToScoreBoard = (link) => {
+    //     link.addEventListener("click", () => {
+    //         hideItem(newGamePage)
+    //         showScoreBoard()
+    //     })
+    // }
+
+
+    // show scoreboard
     const showScoreBoard = () => {
+        if (!getElement("#leaderBoardHeader")) {
         const leaderBoardHeader = document.createElement("h2")
+        leaderBoardHeader.id = "leaderBoardHeader"
         leaderBoardHeader.innerText = "LEADER BOARD"
         leaderBoardHeader.classList = "header-item, secondary"
 
@@ -201,6 +252,7 @@ document.addEventListener("DOMContentLoaded", () => {
         leaderBoard.append(headers)
         contentDiv.append(leaderBoardHeader, leaderBoard)
         // create scoreboard table
+        }
     }
 
     const createTableRows = (leaderBoard) => {
@@ -215,18 +267,29 @@ document.addEventListener("DOMContentLoaded", () => {
                     const row = document.createElement("tr")
                     const position = document.createElement("td")
                     position.innerText = (i + 1)
-                    const player = document.createElement("td")
-                    player.innerText = game.user.username
+                    const playerName = document.createElement("td")
+                    playerName.innerText = game.user.username
                     const gameScore = document.createElement("td")
                     gameScore.innerText = game.score
 
-                    row.append(position, player, gameScore)
+                    row.append(position, playerName, gameScore)
                     leaderBoard.append(row)
                 }
             })
 
     }
 
+    addPlayer2Button.addEventListener("click", () => {
+        currPlayer = players[1]
+        firstScreen(currPlayer)
+    })
+
+    playSelfButton.addEventListener("click", () => {
+        hideAll()
+        renderGameDiv()
+    })
+
+// add game div to page 
     const renderGameDiv = () => {
         console.log("unhidden")
         gameContainer = document.createElement("iframe")
@@ -256,7 +319,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-    firstScreen("Player 1")
+    firstScreen(currPlayer)
 
 })
 

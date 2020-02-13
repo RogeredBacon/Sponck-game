@@ -13,8 +13,9 @@ body {
 
 h1, h2, h3, h4, p {
     display: block;
-    margin-block-start: 0px;
-    margin-block-end: 0px;
+    padding-top: 0.2em;
+    margin-block-start: 10px;
+    margin-block-end: 10px;
     margin-inline-start: 0px;
     margin-inline-end: 0px;
 }
@@ -37,11 +38,33 @@ td, th {
     border-spacing: 5px, 2px;
 }
 
-td {
+td, .playerNameHeader {
     color: #00ff00;
 }
 
+ul {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+/* 
+li a {
+  display: block;
+  color:  #F4FF00;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+} */
 
+/* li a:hover {
+    color: #00ff00;
+} */
 
 .header-item{
     font-family: 'Press Start 2P', cursive;
@@ -82,23 +105,27 @@ td {
     color: #F4FF00;
     font-size: 35px;
 }
-/* .submit {
+
+input[type="submit" i] {
+    -webkit-appearance: none;
     padding: 5px;
     font-size: 16px;
     font-family: 'Orbitron', sans-serif;
-    display: flex;
-    align-items: center;
-    align-self: center;
-} */
+} 
 
 #contentDiv {
     position: relative;
+    
     height: 70vh;
     margin: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+}
+
+#alien {
+    height: 200px;
 }
 
 /* iframe {
@@ -120,6 +147,7 @@ td {
 } */
 
 #gameHeader {
+
     padding: 15px;
     height: 10vh;
     /* font-family: 'Press Start 2P', cursive; */
