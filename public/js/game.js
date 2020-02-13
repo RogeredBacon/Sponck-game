@@ -276,6 +276,7 @@ function create() {
 	blockPink1.setCollideWorldBounds(true);
 	blockPink1.setBounce(0.5);
 	blockPink1.setName('pink');
+	blockPink1.setAngularVelocity(20);
 
 	blockGreen1 = this.physics.add.sprite(
 		gameWindowWidth * 0.8,
@@ -286,17 +287,18 @@ function create() {
 	blockGreen1.setCollideWorldBounds(true);
 	blockGreen1.setBounce(0.5);
 	blockGreen1.setName('green');
+	blockGreen1.setAngularVelocity(20);
 
 	/////Time Event
 
-	function createBlocksFun(createBlocksTimer) {
-		createBlocksTimer = this.time.addEvent({
-			delay: milisecondVar.random(),
-			callback: createAPinkBlock,
-			callbackScope: this,
-			loop: true
-		});
-	}
+	// function createBlocksFun(createBlocksTimer) {
+	createBlocksTimer = this.time.addEvent({
+		delay: milisecondVar.random(),
+		callback: createAPinkBlock,
+		callbackScope: this,
+		loop: true
+	});
+	// }
 
 	///////////////background
 
@@ -524,12 +526,13 @@ function createAPinkBlock() {
 	block.setCollideWorldBounds(true);
 	block.setBounce(0.5);
 	block.setName('pink'); /// to change the state
+	block.setAngularVelocity(20);
 
 	blocksCreated++;
 
-	if (blocksCreated === 30) {
-		createBlocksTimer.remove(false);
-	}
+	// if (blocksCreated === 30) {
+	// 	createBlocksTimer.remove(false);
+	// }
 }
 
 function startGame() {
