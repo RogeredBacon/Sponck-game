@@ -251,6 +251,7 @@ function create() {
 			'heart'
 		);
 		life.scale = 0.3;
+		life.setDepth(100);
 		playerLeftLives[index - 1] = life;
 	}
 
@@ -261,6 +262,7 @@ function create() {
 			'heart'
 		);
 		life.scale = 0.3;
+		life.setDepth(100);
 		playerRightLives[index - 1] = life;
 	}
 
@@ -287,14 +289,13 @@ function create() {
 
 	/////Time Event
 
-	function createBlocksFun(createBlocksTimer) {
+	
 		createBlocksTimer = this.time.addEvent({
 			delay: milisecondVar.random(),
 			callback: createAPinkBlock,
 			callbackScope: this,
 			loop: true
-		});
-	}
+	})
 
 	///////////////background
 
@@ -462,17 +463,7 @@ function hitBlock(ball, block) {
 	}
 }
 
-//doesnt work:
-// function blockHitBlock(block1, block2) {
-// 	velocityX = velocityX + 10;
-// 	velocityX = velocityX * -1;
-// 	velocityY = velocityY * -1;
-// 	block1.setVelocityY(velocityY);
-// 	block1.setVelocityX(velocityX);
-// 	s;
-// 	block2.setVelocityY(velocityY);
-// 	block2.setVelocityX(velocityX);
-// }
+
 
 // Player life lost and 'stunned' logic
 

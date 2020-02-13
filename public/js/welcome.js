@@ -29,7 +29,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const addPlayer2Button = getElement("#addPlayer2Button")
     const playSelfButton = getElement("#playSelfButton")
     const leaderBoardDiv = getElement("#leaderBoardDiv")
-    const gameDiv = getElement("gameDiv")
+    const gameDiv = getElement("#gameDiv")
+    const sounds = getElement("#menu-audio")
 
     const playerNameHeaders = document.querySelectorAll(".playerNameHeader")
     let notFound
@@ -42,8 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const hideAll = () => {for(const item of document.querySelectorAll(".div-item")) { hideItem(item)}}
 
     // first screen hide everything but buttons for login or signup
-    const firstScreen = (playerDeets) => {
-        headerBar.innerHTML=""
+    const firstScreen = () => {
         hideAll()
         unHideItem(welcomeDiv)
 
@@ -52,8 +52,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
    
-
-
     // show sign up form
     signUpButton.addEventListener('click', (e) => {
         hideAll()
@@ -84,13 +82,18 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     // find a user
     const findUser = (users, userForm) => {
-        // let player = 
         for(const user of users){
             let userName = user.username.toUpperCase()
             if (userName == userForm) {
                 currPlayer.username = userName
                 currPlayer.id = user.id
-                return loggedIn()
+                if (currPlayer == players[0] ) { 
+                    return loggedIn()
+                } else {
+                    let player2header = document.querySelector("#player2header")
+                    player2header.innerText = "Player 2 - " + currPlayer.username
+                    return renderGameDiv()
+                }
             }
         }
         userNotFound()
@@ -143,7 +146,13 @@ document.addEventListener("DOMContentLoaded", () => {
             .then( user => {
                 currPlayer.username = user.username
                 currPlayer.id = user.id
-                return loggedIn()
+                if ( currPlayer == players[0]) { 
+                    return loggedIn() 
+                } else {
+                    let player2header = document.querySelector("#player2header")
+                    player2header.innerText = "Player 2 - " + currPlayer.username
+                    return renderGameDiv()
+                }
             } ) 
     }
 
@@ -166,10 +175,9 @@ document.addEventListener("DOMContentLoaded", () => {
         hideAll()
         unHideItem(loggedInPage)
         getElement("#name").innerText = currPlayer.username
-        if (currPlayer == players[1]) {
-            let player2header = document.querySelector("#player2header")
-            player2header.innerText = "Player 2 - " + currPlayer.username
-        } else { createHeaderBar() } 
+        if (currPlayer == players[0]) {
+            createHeaderBar()
+        }
     }
 
 
@@ -204,14 +212,22 @@ document.addEventListener("DOMContentLoaded", () => {
         homeLink.style.color = "#00ff00"
         homeLink.addEventListener("click", () => {
             hideAll()
+            leaderBoardDiv.innerHTML = ""
+            gameDiv.innerHTML = ""
+            sounds.muted = false
+            currPlayer = players[0]
             unHideItem(newGamePage)
         })
 
         const scoreBoardLink = document.createElement("li")
+
         scoreBoardLink.innerText = "LEADER BOARD"
         scoreBoardLink.style.color = "#00ff00"
         scoreBoardLink.addEventListener("click", () => {
             hideAll()
+            leaderBoardDiv.innerHTML = ""
+            gameDiv.innerHTML = ""
+            sounds.muted = false
             showScoreBoard()
         })
         
@@ -228,7 +244,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // show scoreboard
     const showScoreBoard = () => {
         hideAll()
-        leaderBoardDiv.innerHTML = ""
+        // leaderBoardDiv.innerHTML = ""
+        // gameContainer.innerHTML = ""
 
         const leaderBoardHeader = document.createElement("h2")
         leaderBoardHeader.id = "leaderBoardHeader"
@@ -280,19 +297,21 @@ document.addEventListener("DOMContentLoaded", () => {
 // button to log in 2nd player
     addPlayer2Button.addEventListener("click", () => {
         currPlayer = players[1]
-        firstScreen(currPlayer)
+// log in second person then go to game!
+        firstScreen()
     })
 
 // button to go straight to gamne without saving 2nd player
     playSelfButton.addEventListener("click", () => {
-        hideAll()
         renderGameDiv()
     })
 
 // add game div to page 
     const renderGameDiv = () => {
-        stopMusic();
-        gameContainer = document.createElement("iframe")
+        hideAll()
+        stopMusic()
+        unHideItem(gameDiv)
+        let gameContainer = document.createElement("iframe")
         gameContainer.id = "gameContainer"
         gameContainer.src = "/game.html"
         gameContainer.style.height = "100%"
@@ -304,32 +323,22 @@ document.addEventListener("DOMContentLoaded", () => {
         gameDiv.append(gameContainer)
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
+// change music for game
     const stopMusic = () => {
-		document.querySelector('#menu-audio').remove();
+		sounds.muted = true;
 	};
 
-
-    firstScreen(currPlayer)
+    
+    headerBar.innerHTML=""
+    firstScreen()
 
 })
 
 
 // to do:
 
-// - create second player login
-// - create top nav links (change header to navbar)
+// - create second player login -DONE
+// - create top nav links (change header to navbar) -DONE
 // - save game score to games table
 // - add welcome & instructions before game start
 // - add high score to top navbar
