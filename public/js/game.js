@@ -145,6 +145,8 @@ var scoreRight = 0;
 var scoreLeft = 0;
 var scoreTextPlayerRight;
 var scoreTextPlayerLeft;
+var gameOverText;
+var winnerText;
 
 //Blocks
 
@@ -232,6 +234,30 @@ function create() {
 	this.physics.add.collider(ball, playerRight, hitPlayerRight, null, this);
 
 	// UI - Scores + Lives + Timer
+
+	gameOverText = this.add.text(gameWindowWidth * 0.5, gameWindowHight * 0.5, 'Game Over', {
+		fontSize: '10em',
+		fill: '#F4FF00',
+		fontfamily: 'Orbitron, "sans-serif"'
+	});
+	gameOverText.setOrigin(0.5);
+	gameOverText.visible = false;
+
+	// this.tweens.add({
+    //     targets: gameOverText,
+    //     x: 700,
+    //     duration: 3000,
+    //     ease: 'Power2',
+    //     completeDelay: 3000
+	// });
+	
+	winnerText = this.add.text(gameWindowWidth * 0.5, gameWindowHight * 0.7, '', {
+		fontSize: '2em',
+		fill: '#F4FF00',
+		fontfamily: 'Orbitron, "sans-serif"'
+	});
+	winnerText.setOrigin(0.5);
+	winnerText.visible = false;
 
 	scoreTextPlayerLeft = this.add.text(gameWindowWidth * 0.05, 16, 'score: 0', {
 		fontSize: '2em',
@@ -503,6 +529,7 @@ const playerStunned = player => {
 const lifeLost = (player, lives) => {
 	loseLife.play();
 	if (lives.length != 0) {
+	// if (false) {
 		const direction = [-20, 20];
 		player.state = playerState[1];
 		lives[lives.length - 1].setGravityY(700);
@@ -512,10 +539,22 @@ const lifeLost = (player, lives) => {
 		console.log('life lost');
 	} else {
 		gameOver.play();
+		this.winnerText.visible = true;
+
+		this.gameOverText.visible = true;
+
+		this.ball.destroy();
+		this.playerLeft.destroy();
+		this.playerRight.destroy();
+		this.createBlocksTimer.remove(false);
+		soundtrack.destroy();
+
 		console.log('Game Over');
 		if (player == playerLeft) {
+			this.winnerText.setText('Player Right won! With ' + scoreRight + ' points!');
 			console.log('Player Right won! With ' + scoreRight + ' points!');
 		} else {
+			this.winnerText.setText('Player Left won! With ' + scoreLeft + ' points!');
 			console.log('Player Left won! With ' + scoreLeft + ' points!');
 		}
 	}
