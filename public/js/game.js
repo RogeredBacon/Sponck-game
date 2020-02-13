@@ -246,7 +246,7 @@ function create() {
 	var emitter = particles.createEmitter();
 	emitter.setQuantity(20);
 	emitter.startFollow(ball);
-	emitter.setSpeed(6);
+	emitter.setSpeed(600);
 	emitter.setGravity(500, 500);
 
 }
