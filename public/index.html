@@ -14,6 +14,7 @@
 	</head>
 
 	<body>
+		<header id = "headerBar"></header>
 		<div id="gameHeader" class="center-item header-item">
 			<h1>SPONCK</h1>
 		</div>
@@ -35,7 +36,7 @@
 				<p>Sign Up</p>
 				<br>
 				<form id="signupForm">
-					<label>Create User Name: </label><input class="username" type="text">
+					<label>Create User Name: </label><input class="username" type="text" required>
 					<input class="submit" type="Submit" value="Take me to the party!">
 				</form>
 			</div>
@@ -45,7 +46,7 @@
 				<p>Sign In</p>
 				<br>
 				<form id="loginForm">
-					<label>User Name: </label><input class="username" type="text">
+					<label>User Name: </label><input class="username" type="text" required>
 					<input class="submit" type="Submit" value="Take me to the party!">
 				</form>
 			</div>
@@ -63,6 +64,9 @@
 				<button id="addPlayer2Button" class="inline-item">Add Another Human</button>
 				<button id="playSelfButton" class="inline-item">Play My Alien Alterego</button>
 			</div>
+
+			<div id="leaderBoardDiv" class="secondary center-item div-item"></div>
+			<div id="gameDiv" class="secondary center-item div-item"></div>
 
 		</div>
 	</body>

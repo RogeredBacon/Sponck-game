@@ -38,7 +38,7 @@ td, th {
     border-spacing: 5px, 2px;
 }
 
-td, .playerNameHeader {
+td, .playerNameHeader, #name {
     color: #00ff00;
 }
 
@@ -52,6 +52,11 @@ ul {
     margin: 0;
     padding: 0;
     overflow: hidden;
+}
+
+li {
+    position: relative;
+    z-index: 50;
 }
 /* 
 li a {
@@ -113,8 +118,12 @@ input[type="submit" i] {
     font-family: 'Orbitron', sans-serif;
 } 
 
+#leaderBoardDiv {
+    width: 50%;
+}
+
 #contentDiv {
-    position: relative;
+    position: static;
     
     height: 70vh;
     margin: auto;
