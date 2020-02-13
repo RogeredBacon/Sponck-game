@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const gameHeader = getElement("#gameHeader")
     const contentDiv = getElement("#contentDiv")
     const welcomeDiv = getElement("#welcomeDiv")
+    const playerNameHeader = getElement("#playerNameHeader")
     const signUpDiv = getElement("#signUpDiv")
     const loginDiv = getElement("#loginDiv")
     // const gameContainer = getElement("#gameContainer")
@@ -30,11 +31,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const unHideItem = (item) => item.classList.remove("hidden")
 
     // first screen hide everything but buttons for login or signup
-    const firstScreen = () => {
+    const firstScreen = (player) => {
         hideItem(signUpDiv)
         hideItem(loginDiv)
         // hideItem(gameContainer)
         hideItem(loggedInPage)
+
+        playerNameHeader.innerText = player
 
         alien = document.createElement("img")
         alien.src = "/assets/alien.png"
@@ -194,7 +197,6 @@ document.addEventListener("DOMContentLoaded", () => {
         
         createTableRows(leaderBoard)
 
-
         headers.append(positionHeader, nameHeader, scoreHeader)
         leaderBoard.append(headers)
         contentDiv.append(leaderBoardHeader, leaderBoard)
@@ -221,11 +223,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     row.append(position, player, gameScore)
                     leaderBoard.append(row)
                 }
-
             })
 
-
-        
     }
 
     const renderGameDiv = () => {
@@ -257,6 +256,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-    firstScreen()
+    firstScreen("Player 1")
 
 })
+
+
+// to do:
+
+// - create second player login
+// - create top nav links (change header to navbar)
+// - save game score to games table
+// - add welcome & instructions before game start
+// - add high score to top navbar
+// - change colours and fonts of scores in game window
