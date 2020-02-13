@@ -237,11 +237,13 @@ function create() {
 
 	scoreTextPlayerLeft = this.add.text(gameWindowWidth * 0.05, 16, 'score: 0', {
 		fontSize: '2em',
-		fill: '#F00'
+		fill: '#F4FF00',
+		fontfamily: 'Orbitron, "sans-serif"'
 	});
 	scoreTextPlayerRight = this.add.text(gameWindowWidth - 150, 16, 'score: 0', {
 		fontSize: '2em',
-		fill: '#00F'
+		fill: '#00FF00',
+		fontfamily: 'Orbitron, "sans-serif"'
 	});
 
 	for (let index = 1; index < playerLeftLives.length + 1; index++) {
