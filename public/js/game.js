@@ -120,6 +120,8 @@ function create() {
 
 	this.keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
 	this.keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+	this.keyP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
+	this.keyE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
 
 	playerRight = this.physics.add.sprite(
 		gameWindowWidth - 20,
@@ -129,12 +131,15 @@ function create() {
 	playerRight.setCollideWorldBounds(true);
 	playerRight.state = playerState[0];
 
-	playerLeft = this.physics.add.sprite(20, gameWindowHight / 2, 'playerLeft');
+	playerLeft = this.physics.add.sprite(
+		20, 
+		gameWindowHight / 2, 
+		'playerLeft'
+	);
 	playerLeft.setCollideWorldBounds(true);
 	playerLeft.state = playerState[0];
 
-	// this.ball = this.add.image(config.width/2 -50, config.height/2,'ball')
-	// this.ball.setScale(0.5);
+
 	ball = this.physics.add.sprite(
 		gameWindowWidth / 2,
 		gameWindowHight / 2,
@@ -146,8 +151,8 @@ function create() {
 	ball.setBounce(1);
 
 	//it do horizontal and vertical movement.
-	ball.setVelocityY(velocityY);
-	ball.setVelocityX(velocityX);
+	ball.setVelocityY(0);
+	ball.setVelocityX(0);
 
 	this.physics.add.collider(ball, playerLeft, hitPlayerLeft, null, this);
 	this.physics.add.collider(ball, playerRight, hitPlayerRight, null, this);
@@ -216,15 +221,13 @@ function create() {
 	});
 	// createBlocksTimer = this.time.addEvent({ delay: 1000, callback: createAPinkBlock, callbackScope: this, loop: true });
 
-	this.keyP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
-
 	///// change to another scene:
-	this.keyR = this.input.keyboard.on('keyup', function(e) {
-		if (e.key == 'r') {
-			console.log('r is down');
-			game.scene.start('TitleScene');
-		}
-	});
+	// this.keyR = this.input.keyboard.on('keyup', function(e) {
+	// 	if (e.key == 'r') {
+	// 		console.log('r is down');
+	// 		game.scene.start('TitleScene');
+	// 	}
+	// });
 
 	///////////////background
 
@@ -235,22 +238,21 @@ function create() {
 	emitter.setSpeed(6000);
 	emitter.setGravity(500, 500);
 
-
-	////easter Egg
-
-	this.keyE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
-
-
 }
 
 function update() {
-	if (this.keyP.isDown) {
-		console.log('p is down');
-		game.scene.pause('default');
-	}
-
 	if (this.keyE.isDown) {
 		blocksArray = blocksWomenPry;
+	}
+
+	if (cursor.space.isDown) {
+		ball.setVelocityY(velocityY);
+		ball.setVelocityX(velocityX);
+	}
+
+	if (this.keyP.isDown){
+		ball.setVelocityY(0);
+		ball.setVelocityX(0);
 	}
 
 	//repeated events at certain time intervals
@@ -291,11 +293,11 @@ function update() {
 		ball.x += 50;
 	}
 
-	if (playerLeft.state == playerState[1]) {
-		playerStunned(playerLeft);
-	} else if (playerRight.state == playerState[1]) {
-		playerStunned(playerRight);
-	}
+	// if (playerLeft.state == playerState[1]) {
+	// 	playerStunned(playerLeft);
+	// } else if (playerRight.state == playerState[1]) {
+	// 	playerStunned(playerRight);
+	// }
 }
 
 function hitPlayerLeft(ball, playerLeft) {
@@ -357,7 +359,7 @@ function hitBlock(ball, block) {
 	// timedEvent = this.time.addEvent({ delay: 2000, callback: blockChange, callbackScope: this })
 
 	if (blockPointPlayer === '') {
-		console.log('block hit num found');
+		console.log('Cofee is better than tea');
 	} else if (blockPointPlayer === 'right') {
 		scoreRight += 100;
 		scoreTextPlayerRight.setText('Score: ' + scoreRight);
@@ -370,16 +372,17 @@ function hitBlock(ball, block) {
 }
 
 //doesnt work:
-function blockHitBlock(block1, block2) {
-	velocityX = velocityX + 10;
-	velocityX = velocityX * -1;
-	velocityY = velocityY * -1;
-	block1.setVelocityY(velocityY);
-	block1.setVelocityX(velocityX);
-	s;
-	block2.setVelocityY(velocityY);
-	block2.setVelocityX(velocityX);
-}
+// function blockHitBlock(block1, block2) {
+// 	velocityX = velocityX + 10;
+// 	velocityX = velocityX * -1;
+// 	velocityY = velocityY * -1;
+// 	block1.setVelocityY(velocityY);
+// 	block1.setVelocityX(velocityX);
+// 	s;
+// 	block2.setVelocityY(velocityY);
+// 	block2.setVelocityX(velocityX);
+// }
+
 
 // Player life lost and 'stunned' logic
 
@@ -423,4 +426,3 @@ function createAPinkBlock() {
 	}
 }
 
-// }// scene closer
