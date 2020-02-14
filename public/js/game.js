@@ -11,8 +11,8 @@ const playerState = {
 
 let time = Date.now();
 
-let playerLeftLives = ['', '', ''];
-let playerRightLives = ['', '', ''];
+let playerLeftLives = ['', '', '','',''];
+let playerRightLives = ['', '', '','',''];
 
 var config = {
 	type: Phaser.AUTO,
@@ -234,22 +234,6 @@ function create() {
 	this.physics.add.collider(ball, playerRight, hitPlayerRight, null, this);
 
 	// UI - Scores + Lives + Timer
-
-	gameOverText = this.add.text(gameWindowWidth * 0.5, gameWindowHight * 0.5, 'Game Over', {
-		fontSize: '10em',
-		fill: '#F4FF00',
-		fontfamily: 'Orbitron, "sans-serif"'
-	});
-	gameOverText.setOrigin(0.5);
-	gameOverText.visible = false;
-
-	// this.tweens.add({
-    //     targets: gameOverText,
-    //     x: 700,
-    //     duration: 3000,
-    //     ease: 'Power2',
-    //     completeDelay: 3000
-	// });
 	
 	winnerText = this.add.text(gameWindowWidth * 0.5, gameWindowHight * 0.7, '', {
 		fontSize: '2em',
@@ -339,6 +323,13 @@ function create() {
 	emitter2.setSpeed(6000);
 	emitter2.setGravity(500, 500);
 
+	gameOverText = this.add.text(gameWindowWidth * 0.5, gameWindowHight * 0.5, 'Game Over', {
+		fontSize: '10em',
+		fill: '#F4FF00',
+		fontfamily: 'Orbitron, "sans-serif"'
+	});
+	gameOverText.setOrigin(0.5);
+	gameOverText.visible = false;
 	
 }
 
@@ -544,6 +535,7 @@ const lifeLost = (player, lives) => {
 		this.gameOverText.visible = true;
 
 		this.ball.destroy();
+		this.block.destroy();
 		this.playerLeft.destroy();
 		this.playerRight.destroy();
 		this.createBlocksTimer.remove(false);
