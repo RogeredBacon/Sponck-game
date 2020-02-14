@@ -234,46 +234,46 @@ function create() {
 	this.physics.add.collider(ball, playerLeft, hitPlayerLeft, null, this);
 	this.physics.add.collider(ball, playerRight, hitPlayerRight, null, this);
 
-
 	//text
 
 	welcomeMessage = this.add.text(
-		gameWindowWidth * 0.25, 
-		gameWindowHight * 0.5, 
+		gameWindowWidth * 0.25,
+		gameWindowHight * 0.5,
 		"Your goal is to survive the longest\nDon't let the commet go past you\nor you will be frozen in time and space!\nWinner is the last human standing...",
 		{
-		fontSize: '3em',
-		fill: '#ff1a75',
-		fontFamily: 'Orbitron, "sans-serif"',
-		align: 'left',
-		lineSpacing: 25,
-	});
+			fontSize: '3em',
+			fill: '#ff1a75',
+			fontFamily: 'Orbitron, "sans-serif"',
+			align: 'left',
+			lineSpacing: 25
+		}
+	);
 	welcomeMessage.setOrigin(0.5);
 	welcomeMessage.visible = true;
 
 	instructions = this.add.text(
-		gameWindowWidth * 0.75, 
-		gameWindowHight * 0.5, 
+		gameWindowWidth * 0.75,
+		gameWindowHight * 0.5,
 		'Player Left: W and S\nPlayer Right: Up and Down\nPress P for pause\nPress Space to start or resume the game',
 		{
-		fontSize: '3em',
-		fill: '#ff1a75',
-		fontFamily: 'Orbitron, "sans-serif"',
-		// shadow: {
-		// 	offsetX: 10,
-		// 	offsetY: 10,
-		// 	color: '#fff',
-		// 	blur: 10,
-		// 	stroke: false,
-		// 	fill: true
-		// },
-		align: 'right',
-		lineSpacing: 25,
-	});
+			fontSize: '3em',
+			fill: '#ff1a75',
+			fontFamily: 'Orbitron, "sans-serif"',
+			// shadow: {
+			// 	offsetX: 10,
+			// 	offsetY: 10,
+			// 	color: '#fff',
+			// 	blur: 10,
+			// 	stroke: false,
+			// 	fill: true
+			// },
+			align: 'right',
+			lineSpacing: 25
+		}
+	);
 	instructions.setOrigin(0.5);
 	instructions.visible = true;
 	instructions.setDepth(99);
-	
 
 	winnerText = this.add.text(gameWindowWidth * 0.5, gameWindowHight * 0.7, '', {
 		fontSize: '2em',
@@ -295,17 +295,21 @@ function create() {
 		fontFamily: 'Orbitron, "sans-serif"'
 	});
 
-	gameOverText = this.add.text(gameWindowWidth * 0.5, gameWindowHight * 0.5, 'Game Over', {
-		fontSize: '10em',
-		fill: '#F4FF00',
-		fontFamily: 'Orbitron, "sans-serif"'
-	});
+	gameOverText = this.add.text(
+		gameWindowWidth * 0.5,
+		gameWindowHight * 0.5,
+		'Game Over',
+		{
+			fontSize: '10em',
+			fill: '#F4FF00',
+			fontFamily: 'Orbitron, "sans-serif"'
+		}
+	);
 	gameOverText.setOrigin(0.5);
 	gameOverText.visible = false;
 	gameOverText.setDepth(97);
 
 	// UI - Scores + Lives + Timer
-
 
 	for (let index = 1; index < playerLeftLives.length + 1; index++) {
 		let life = this.physics.add.sprite(
@@ -377,8 +381,7 @@ function create() {
 	emitter2.setQuantity(20);
 	emitter2.startFollow(ball);
 	emitter2.setSpeed(6000);
-	emitter2.setGravity(500, 500);	
-  
+	emitter2.setGravity(500, 500);
 }
 
 function update() {
@@ -544,7 +547,6 @@ function hitBlock(ball, block) {
 	);
 
 	if (blockPointPlayer === '') {
-		console.log('Cofee is better than tea');
 	} else if (blockPointPlayer === 'right') {
 		scoreRight += 100;
 		scoreTextPlayerRight.setText('Score: ' + scoreRight);
@@ -576,7 +578,6 @@ const lifeLost = (player, lives) => {
 		lives[lives.length - 1].setVelocityX(direction.random());
 		lives[lives.length - 1].setVelocityY(-400);
 		lives.pop();
-		console.log('life lost');
 	} else {
 		gameOver.play();
 		this.winnerText.visible = true;
@@ -590,17 +591,14 @@ const lifeLost = (player, lives) => {
 		this.createBlocksTimer.remove(false);
 		soundtrack.destroy();
 
-		console.log('Game Over');
 		if (player == playerLeft) {
 			this.winnerText.setText(
 				'Player Right won! With ' + scoreRight + ' points!'
 			);
-			console.log('Player Right won! With ' + scoreRight + ' points!');
 		} else {
 			this.winnerText.setText(
 				'Player Left won! With ' + scoreLeft + ' points!'
 			);
-			console.log('Player Left won! With ' + scoreLeft + ' points!');
 		}
 	}
 };
