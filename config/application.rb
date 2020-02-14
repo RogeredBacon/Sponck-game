@@ -30,7 +30,7 @@ module SponckGame
       allow do
         origins '*'
         # resource '*'
-        resource '*', headers: :any, methods: %i[get post]
+        resource '*', headers: :any, methods: :any
       end
     end
 

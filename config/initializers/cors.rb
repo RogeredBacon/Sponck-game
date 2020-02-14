@@ -11,8 +11,6 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
     origins 'example.com'
 
-    resource '*',
-             headers: :any,
-             methods: %i[get post]
+    resource '*', headers: :any, methods: :any
   end
 end
