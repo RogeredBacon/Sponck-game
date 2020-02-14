@@ -1,4 +1,3 @@
-
 const gameWindowWidth = window.innerWidth - 5;
 const gameWindowHight = window.innerHeight - 5;
 
@@ -11,8 +10,8 @@ const playerState = {
 
 let time = Date.now();
 
-let playerLeftLives = ['', '', '','',''];
-let playerRightLives = ['', '', '','',''];
+let playerLeftLives = ['', '', '', '', ''];
+let playerRightLives = ['', '', '', '', ''];
 
 var config = {
 	type: Phaser.AUTO,
@@ -90,10 +89,10 @@ function preload() {
 	this.load.image('renata', 'assets/renata.png');
 	this.load.image('mariola', 'assets/mariola.png');
 	this.load.image('keemo', 'assets/keemo.png');
-	
+
 	this.load.image('particle', 'assets/particle.png');
 	this.load.image('heart', 'assets/heart_pixelart.png');
-	this.load.image('explosion','assets/explosion.png')
+	this.load.image('explosion', 'assets/explosion.png');
 
 	// Here be sounds
 	this.load.audio('paddleBall', 'assets/sounds/paddle.wav');
@@ -235,6 +234,7 @@ function create() {
 	this.physics.add.collider(ball, playerLeft, hitPlayerLeft, null, this);
 	this.physics.add.collider(ball, playerRight, hitPlayerRight, null, this);
 
+
 	//text
 
 	welcomeMessage = this.add.text(
@@ -274,6 +274,7 @@ function create() {
 	instructions.visible = true;
 	instructions.setDepth(99);
 	
+
 	winnerText = this.add.text(gameWindowWidth * 0.5, gameWindowHight * 0.7, '', {
 		fontSize: '2em',
 		fill: '#F4FF00',
@@ -352,7 +353,7 @@ function create() {
 	blockGreen1.setAngularVelocity(20);
 
 	/////Time Event
-		createBlocksTimer = this.time.addEvent({
+	createBlocksTimer = this.time.addEvent({
 		delay: milisecondVar.random(),
 		callback: createAPinkBlock,
 		callbackScope: this,
@@ -377,6 +378,7 @@ function create() {
 	emitter2.startFollow(ball);
 	emitter2.setSpeed(6000);
 	emitter2.setGravity(500, 500);	
+  
 }
 
 function update() {
@@ -514,8 +516,7 @@ function hitBlock(ball, block) {
 	timedEvent = this.time.delayedCall(
 		1000,
 		function() {
-
-			//explosion 
+			//explosion
 			var emitter3 = particlesBlock.createEmitter({
 				alpha: { start: 1, end: 0 },
 				scale: { start: 1.5, end: 4.5 },
@@ -568,7 +569,7 @@ const playerStunned = player => {
 const lifeLost = (player, lives) => {
 	loseLife.play();
 	if (lives.length != 0) {
-	// if (false) {
+		// if (false) {
 		const direction = [-20, 20];
 		player.state = playerState[1];
 		lives[lives.length - 1].setGravityY(700);
@@ -591,10 +592,14 @@ const lifeLost = (player, lives) => {
 
 		console.log('Game Over');
 		if (player == playerLeft) {
-			this.winnerText.setText('Player Right won! With ' + scoreRight + ' points!');
+			this.winnerText.setText(
+				'Player Right won! With ' + scoreRight + ' points!'
+			);
 			console.log('Player Right won! With ' + scoreRight + ' points!');
 		} else {
-			this.winnerText.setText('Player Left won! With ' + scoreLeft + ' points!');
+			this.winnerText.setText(
+				'Player Left won! With ' + scoreLeft + ' points!'
+			);
 			console.log('Player Left won! With ' + scoreLeft + ' points!');
 		}
 	}
