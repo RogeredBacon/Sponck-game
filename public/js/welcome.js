@@ -1,8 +1,8 @@
 // helper functions
 const getElement = element => document.querySelector(element);
 // urls
-const usersURL = 'https://secret-cliffs-20710.herokuapp.com/users';
-const gamesURL = 'https://secret-cliffs-20710.herokuapp.com//games/';
+const usersURL = 'https://sponck.herokuapp.com/users';
+const gamesURL = 'https://sponck.herokuapp.com/games/';
 
 const players = [{ player: 'Player 1' }, { player: 'Player 2' }];
 let currPlayer = players[0];
