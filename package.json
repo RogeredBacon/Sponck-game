@@ -1,17 +1,15 @@
 {
-  "name": "sponck",
-  "version": "1.0.0",
-  "description": "Alien Sponck Party",
-  "main": "phaser.js",
-  "dependencies": {
-    "express": "^4.17.1",
-    "http-server": "^0.12.1",
-    "phaser": "^3.22.0"
-  },
-  "devDependencies": {},
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "James, Toli, Renata",
-  "license": "ISC"
+	"name": "sponck",
+	"version": "1.0.0",
+	"description": "Alien Sponck Party",
+	"main": "phaser.js",
+	"dependencies": {
+		"phaser": "^3.22.0"
+	},
+	"devDependencies": {},
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"author": "James, Toli, Renata",
+	"license": "ISC"
 }
