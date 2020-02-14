@@ -313,7 +313,7 @@ function create() {
 
 	for (let index = 1; index < playerLeftLives.length + 1; index++) {
 		let life = this.physics.add.sprite(
-			gameWindowWidth * 0.05 * index,
+			50 * index,
 			gameWindowHight * 0.92,
 			'heart'
 		);
