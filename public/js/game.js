@@ -221,7 +221,7 @@ function create() {
 		gameWindowHight / 2,
 		'ball'
 	);
-	ball.width = 250;
+	// ball.width = 50;
 
 	ball.setCollideWorldBounds(true);
 	ball.setCircle(10);
@@ -245,14 +245,6 @@ function create() {
 		fontSize: '3em',
 		fill: '#ff1a75',
 		fontFamily: 'Orbitron, "sans-serif"',
-		// shadow: {
-		// 	offsetX: 10,
-		// 	offsetY: 10,
-		// 	color: '#fff',
-		// 	blur: 10,
-		// 	stroke: false,
-		// 	fill: true
-		// },
 		align: 'left',
 		lineSpacing: 25,
 	});
@@ -432,13 +424,13 @@ function update() {
 		playerLeft.setVelocityY(0);
 	}
 
-	if (ball.x >= gameWindowWidth - 20 && playerRight.state == playerState[0]) {
+	if (ball.x >= gameWindowWidth - 6 && playerRight.state == playerState[0]) {
 		lifeLost(playerRight, playerRightLives);
 		// scoreLeft += 1;
 		// scoreTextPlayerLeft.setText('Score: ' + scoreLeft);
 		// ball.velocityX *= -1
 		// ball.velocityY *= -1
-		ball.x -= 50;
+		// ball.x -= 100;
 	}
 
 	if (ball.x <= 20 && playerLeft.state == playerState[0]) {
