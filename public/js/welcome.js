@@ -186,15 +186,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // create scoreboard table & display
     scoreBoardButton.addEventListener("click", (e) => {
-        // createHeaderBar()
         hideAll()
         showScoreBoard()
     })
 
     newGameButton.addEventListener("click", (e) => {
-        // createHeaderBar()
         hideAll()
-        // add option to log in a second player
         unHideItem(newGamePage)
     })
 
@@ -236,7 +233,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         headerItems.append(player1, scoreBoardLink, homeLink, player2)
         headerBar.append(headerItems)
-            // need to add elements for high scores? log out, show scoreboard
+            //add elements for high scores? log out?
         
     }
 
@@ -244,9 +241,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // show scoreboard
     const showScoreBoard = () => {
         hideAll()
-        // leaderBoardDiv.innerHTML = ""
-        // gameContainer.innerHTML = ""
-
         const leaderBoardHeader = document.createElement("h2")
         leaderBoardHeader.id = "leaderBoardHeader"
         leaderBoardHeader.innerText = "LEADER BOARD"
