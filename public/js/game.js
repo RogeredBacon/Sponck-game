@@ -146,6 +146,8 @@ var scoreTextPlayerRight;
 var scoreTextPlayerLeft;
 var gameOverText;
 var winnerText;
+var instructions;
+var welcomeMessage;
 
 //Blocks
 
@@ -218,7 +220,7 @@ function create() {
 		gameWindowHight / 2,
 		'ball'
 	);
-	ball.width = 250;
+	// ball.width = 50;
 
 	ball.setCollideWorldBounds(true);
 	ball.setCircle(10);
@@ -232,26 +234,78 @@ function create() {
 	this.physics.add.collider(ball, playerLeft, hitPlayerLeft, null, this);
 	this.physics.add.collider(ball, playerRight, hitPlayerRight, null, this);
 
-	// UI - Scores + Lives + Timer
+
+	//text
+
+	welcomeMessage = this.add.text(
+		gameWindowWidth * 0.25, 
+		gameWindowHight * 0.5, 
+		"Your goal is to survive the longest\nDon't let the commet go past you\nor you will be frozen in time and space!\nWinner is the last human standing...",
+		{
+		fontSize: '3em',
+		fill: '#ff1a75',
+		fontFamily: 'Orbitron, "sans-serif"',
+		align: 'left',
+		lineSpacing: 25,
+	});
+	welcomeMessage.setOrigin(0.5);
+	welcomeMessage.visible = true;
+
+	instructions = this.add.text(
+		gameWindowWidth * 0.75, 
+		gameWindowHight * 0.5, 
+		'Player Left: W and S\nPlayer Right: Up and Down\nPress P for pause\nPress Space to start or resume the game',
+		{
+		fontSize: '3em',
+		fill: '#ff1a75',
+		fontFamily: 'Orbitron, "sans-serif"',
+		// shadow: {
+		// 	offsetX: 10,
+		// 	offsetY: 10,
+		// 	color: '#fff',
+		// 	blur: 10,
+		// 	stroke: false,
+		// 	fill: true
+		// },
+		align: 'right',
+		lineSpacing: 25,
+	});
+	instructions.setOrigin(0.5);
+	instructions.visible = true;
+	instructions.setDepth(99);
+	
 
 	winnerText = this.add.text(gameWindowWidth * 0.5, gameWindowHight * 0.7, '', {
 		fontSize: '2em',
 		fill: '#F4FF00',
-		fontfamily: 'Orbitron, "sans-serif"'
+		fontFamily: 'Orbitron, "sans-serif"'
 	});
 	winnerText.setOrigin(0.5);
 	winnerText.visible = false;
+	winnerText.setDepth(98);
 
 	scoreTextPlayerLeft = this.add.text(gameWindowWidth * 0.05, 16, 'score: 0', {
 		fontSize: '2em',
 		fill: '#F4FF00',
-		fontfamily: 'Orbitron, "sans-serif"'
+		fontFamily: 'Orbitron, "sans-serif"'
 	});
 	scoreTextPlayerRight = this.add.text(gameWindowWidth - 150, 16, 'score: 0', {
 		fontSize: '2em',
 		fill: '#00FF00',
-		fontfamily: 'Orbitron, "sans-serif"'
+		fontFamily: 'Orbitron, "sans-serif"'
 	});
+
+	gameOverText = this.add.text(gameWindowWidth * 0.5, gameWindowHight * 0.5, 'Game Over', {
+		fontSize: '10em',
+		fill: '#F4FF00',
+		fontFamily: 'Orbitron, "sans-serif"'
+	});
+	gameOverText.setOrigin(0.5);
+	gameOverText.visible = false;
+	gameOverText.setDepth(97);
+
+	// UI - Scores + Lives + Timer
+
 
 	for (let index = 1; index < playerLeftLives.length + 1; index++) {
 		let life = this.physics.add.sprite(
@@ -289,7 +343,7 @@ function create() {
 
 	blockGreen1 = this.physics.add.sprite(
 		gameWindowWidth * 0.8,
-		gameWindowHight * 0.5,
+		gameWindowHight * 0.75,
 		'blockGreen1'
 	);
 	this.physics.add.collider(ball, blockGreen1, hitBlock, null, this);
@@ -303,11 +357,13 @@ function create() {
 		delay: milisecondVar.random(),
 		callback: createAPinkBlock,
 		callbackScope: this,
-		loop: true
+		loop: true,
+		paused: true
 	});
 
 	///////////////background
 
+	//tail
 	var particles = this.add.particles('particle');
 	var emitter = particles.createEmitter();
 	emitter.setQuantity(5);
@@ -315,27 +371,14 @@ function create() {
 	emitter.setSpeed(100);
 	emitter.setGravity(500, 500);
 
+	//circle
 	var particles2 = this.add.particles('particle');
 	var emitter2 = particles.createEmitter();
 	emitter2.setQuantity(20);
 	emitter2.startFollow(ball);
 	emitter2.setSpeed(6000);
-	emitter2.setGravity(500, 500);
-
-	gameOverText = this.add.text(
-		gameWindowWidth * 0.5,
-		gameWindowHight * 0.5,
-		'Game Over',
-		{
-			fontSize: '10em',
-			fill: '#F4FF00',
-			fontfamily: 'Orbitron, "sans-serif"'
-		}
-	);
-	gameOverText.setOrigin(0.5);
-	gameOverText.visible = false;
-
-	gameStart.play();
+	emitter2.setGravity(500, 500);	
+  
 }
 
 function update() {
@@ -349,7 +392,9 @@ function update() {
 		velocityX = arrayX.random();
 		ball.setVelocityY(velocityY);
 		ball.setVelocityX(velocityX);
-		createBlocks = true;
+		createBlocksTimer.paused = false;
+		welcomeMessage.visible = false;
+		instructions.visible = false;
 	}
 
 	if (this.keyP.isDown) {
@@ -357,8 +402,8 @@ function update() {
 		velocityX = 0;
 		ball.setVelocityY(velocityY);
 		ball.setVelocityX(velocityX);
-		createBlocks = false;
-		// startGame();
+		createBlocksTimer.paused = true;
+		instructions.visible = true;
 	}
 
 	//repeated events at certain time intervals
@@ -381,13 +426,13 @@ function update() {
 		playerLeft.setVelocityY(0);
 	}
 
-	if (ball.x >= gameWindowWidth - 20 && playerRight.state == playerState[0]) {
+	if (ball.x >= gameWindowWidth - 6 && playerRight.state == playerState[0]) {
 		lifeLost(playerRight, playerRightLives);
 		// scoreLeft += 1;
 		// scoreTextPlayerLeft.setText('Score: ' + scoreLeft);
 		// ball.velocityX *= -1
 		// ball.velocityY *= -1
-		ball.x -= 50;
+		// ball.x -= 100;
 	}
 
 	if (ball.x <= 20 && playerLeft.state == playerState[0]) {
@@ -426,7 +471,7 @@ function hitPlayerLeft(ball, playerLeft) {
 	if (velocityY == 0) {
 		velocityY = arrayY.random();
 	}
-
+	ball.setGravityY(arrayY.random());
 	playerLeft.setVelocityX(0);
 }
 
@@ -448,7 +493,7 @@ function hitPlayerRight(ball, playerRight) {
 	if (velocityY == 0) {
 		velocityY = arrayY.random();
 	}
-	ball.setGravityY(velocityY);
+	ball.setGravityY(arrayY.random());
 	playerRight.setVelocityX(0);
 }
 
