@@ -1,6 +1,6 @@
 var express = require('express');
 var app = express();
-var server = require('http').Server(app);
+var server = require('https').Server(app);
 
 app.use(express.static(__dirname + '/public'));
 
