@@ -239,7 +239,7 @@ function create() {
 	welcomeMessage = this.add.text(
 		gameWindowWidth * 0.25,
 		gameWindowHight * 0.5,
-		"Your goal is to survive the longest\nDon't let the commet go past you\nor you will be frozen in time and space!\nWinner is the last human standing...",
+		"Your goal is to survive the longest\nDon't let the comet go past you\nor you will be frozen in time and space!\nWinner is the last human standing...",
 		{
 			fontSize: '3em',
 			fill: '#ff1a75',
